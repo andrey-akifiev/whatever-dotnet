@@ -1,0 +1,11 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AILocator_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003FLibrary_003FApplication_0020Support_003FJetBrains_003FRider2025_002E2_003Fresharper_002Dhost_003FSourcesCache_003F4faeb352393fdcaf67392b2208bb97e7ec46557467626a4b343199d93c3097_003FILocator_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ATestConfigurationCreateUpdateParameters_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003FLibrary_003FApplication_0020Support_003FJetBrains_003FRider2025_002E2_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Faf2a7d7b8d934fedb67e6337ed8c19d61c7b0_003Fea_003F015fa77c_003FTestConfigurationCreateUpdateParameters_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b312ea3d_002D92ca_002D405c_002Daa4e_002D7feafa783559/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;And&gt;
+    &lt;TestAncestor&gt;
+      &lt;TestId&gt;NUnit3x::E47CD7DF-AC4F-4F45-B22C-B88CBD84FAB0::net8.0::WhateverDotNet.Reqnroll.Features.CalculatorFeature.AdditionOfTwoNumbers&lt;/TestId&gt;
+    &lt;/TestAncestor&gt;
+    &lt;Category&gt;mytag&lt;/Category&gt;
+  &lt;/And&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
