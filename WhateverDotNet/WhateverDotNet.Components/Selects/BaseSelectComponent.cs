@@ -18,7 +18,7 @@ public abstract class BaseSelectComponent : BaseComponent<SelectComponentOptions
         return GetLocator(GetXPathInput()).ClickAsync(options);
     }
 
-    public async Task CollapseAsync()
+    public virtual async Task CollapseAsync()
     {
         if (await IsExpandedAsync().ConfigureAwait(false))
         {
@@ -31,7 +31,7 @@ public abstract class BaseSelectComponent : BaseComponent<SelectComponentOptions
             .ConfigureAwait(false);
     }
 
-    public async Task ExpandAsync()
+    public virtual async Task ExpandAsync()
     {
         bool isExpanded = await IsExpandedAsync().ConfigureAwait(false);
 
@@ -55,7 +55,7 @@ public abstract class BaseSelectComponent : BaseComponent<SelectComponentOptions
         return _options;
     }
 
-    public async Task<string> SelectItemAsync(string? item, ForceOptions? options = null)
+    public virtual async Task<string> SelectItemAsync(string? item, ForceOptions? options = null)
     {
         if (GetOptions().Expandable != null && GetOptions().Expandable!.Value)
         {
