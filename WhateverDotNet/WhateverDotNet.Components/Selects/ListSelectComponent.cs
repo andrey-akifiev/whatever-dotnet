@@ -23,9 +23,10 @@ public class ListSelectComponent : BaseSelectComponent
             .WaitForTimeoutAsync(100)
             .ConfigureAwait(false); // Wait for filtering to take effect
 
-        var isSelected = bool.Parse(await GetLocator($"{GetXPathItem(item)}/ancestor::label//input")
-            .GetAttributeAsync("aria-checked")
-            .ConfigureAwait(false)!);
+        var isSelected = bool.Parse(
+            (await GetLocator($"{GetXPathItem(item)}/ancestor::label//input")
+                .GetAttributeAsync("aria-checked")
+                .ConfigureAwait(false))!);
 
         if (isSelected)
         {

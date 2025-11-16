@@ -1,4 +1,5 @@
 using WhateverDotNet.Abstractions;
+using WhateverDotNet.Components.Panes;
 
 namespace WhateverDotNet.Components;
 

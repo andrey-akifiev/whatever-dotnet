@@ -12,6 +12,7 @@ public interface IComponent
     Task AssertHasTextAsync(string expectedText);
     Task AssertHasValidationAsync(string? expectedValidationMessage = null);
     Task ClickAsync(LocatorClickOptions? options = null);
+    ComponentOptions GetOptions();
     Task<string?> GetTextAsync();
     Task<string> TypeAsync(string text, ForceOptions? options = null);
 }
