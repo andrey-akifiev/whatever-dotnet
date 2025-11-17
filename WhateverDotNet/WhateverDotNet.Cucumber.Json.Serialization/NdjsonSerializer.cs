@@ -2,7 +2,7 @@
 
 using System.Text.Json;
 
-namespace WhateverDotNet.Reporting.JsonFormatter;
+namespace WhateverDotNet.Cucumber.Json.Serialization;
 
 public class NdjsonSerializer
 {
@@ -41,12 +41,12 @@ public class NdjsonSerializer
         return JsonSerializer.Serialize(message, JsonOptions);
     }
 
-    public static Envelope Deserialize(string json)
+    public static Envelope? Deserialize(string json)
     {
         return NdjsonSerializer.Deserialize<Envelope>(json);
     }
 
-    internal static T Deserialize<T>(string json)
+    internal static T? Deserialize<T>(string json)
     {
         return JsonSerializer.Deserialize<T>(json, JsonOptions);
     }

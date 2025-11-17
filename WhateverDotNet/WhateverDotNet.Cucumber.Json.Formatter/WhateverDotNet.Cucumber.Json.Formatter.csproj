@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WhateverDotNet.Cucumber.Json.Contracts\WhateverDotNet.Cucumber.Json.Contracts.csproj" />
+    <ProjectReference Include="..\WhateverDotNet.Cucumber.Json.Serialization\WhateverDotNet.Cucumber.Json.Serialization.csproj" />
   </ItemGroup>
 
 </Project>

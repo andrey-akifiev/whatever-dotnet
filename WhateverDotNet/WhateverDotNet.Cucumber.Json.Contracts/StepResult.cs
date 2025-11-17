@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WhateverDotNet.Cucumber.Contracts;
+namespace WhateverDotNet.Cucumber.Json.Contracts;
 
 public class StepResult
 {
@@ -8,7 +8,7 @@ public class StepResult
     public ulong? Duration { get; set; }
 
     [JsonPropertyName("status")]
-    public string Status { get; set; }
+    public string? Status { get; set; }
 
     [JsonPropertyName("error_message")]
     public string? ErrorMessage { get; set; }

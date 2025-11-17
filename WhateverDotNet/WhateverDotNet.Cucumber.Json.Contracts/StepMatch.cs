@@ -1,9 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WhateverDotNet.Cucumber.Contracts;
+namespace WhateverDotNet.Cucumber.Json.Contracts;
 
 public class StepMatch
 {
     [JsonPropertyName("location")]
-    public string Location { get; set; }
+    public string? Location { get; set; }
 }

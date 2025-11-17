@@ -2,8 +2,8 @@
 
 using Microsoft.Extensions.Logging;
 
+using WhateverDotNet.Cucumber.Json.Contracts;
 using WhateverDotNet.Reporting.Contracts;
-using WhateverDotNet.Reporting.Cucumber.Parser.Models;
 
 namespace WhateverDotNet.Reporting.Cucumber.Parser;
 
@@ -25,7 +25,12 @@ public class CucumberParser(CucumberParserOptions options, ILoggerFactory? logge
         
         foreach (Feature feature in features)
         {
-            foreach (Scenario scenario in feature.Scenarios)
+            if (feature.Elements == null)
+            {
+                continue;
+            }
+
+            foreach (Scenario scenario in feature.Elements)
             {
                 var errorMessages = scenario
                     .Steps
@@ -51,10 +56,10 @@ public class CucumberParser(CucumberParserOptions options, ILoggerFactory? logge
                                 .ToArray(),
                         DurationInMilliseconds = (scenario
                             .Steps?
-                            .Sum(step => step.Result?.Duration ?? 0) ?? 0) / 1000000,
+                            .Sum(step => (long)(step.Result?.Duration ?? 0L)) ?? 0L) / 1000000,
                         ErrorMessage = errorMessage,
                         State = "Completed",
-                        Status = scenario.Steps == null || scenario.Steps.Length == 0
+                        Status = scenario.Steps == null || scenario.Steps.Count == 0
                             ? "NotExecuted"
                             : scenario.Steps.Any(step => step.Result?.Status == "failed")
                                 ? "Failed"

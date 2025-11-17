@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WhateverDotNet.Cucumber.Contracts;
+namespace WhateverDotNet.Cucumber.Json.Contracts;
 
 public class Tag
 {
@@ -8,5 +8,5 @@ public class Tag
     public uint Line { get; set; }
 
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 }

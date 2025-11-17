@@ -1,6 +1,6 @@
 using Io.Cucumber.Messages.Types;
 
-namespace WhateverDotNet.Reporting.JsonFormatter;
+namespace WhateverDotNet.Cucumber.Json.Formatter;
 
 public class MessageLookup
 {

@@ -1,29 +1,29 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WhateverDotNet.Cucumber.Contracts;
+namespace WhateverDotNet.Cucumber.Json.Contracts;
 
 public class Feature
 {
     [JsonPropertyName("description")]
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     [JsonPropertyName("elements")]
-    public List<Scenario> Elements { get; set; }
+    public List<Scenario>? Elements { get; set; }
 
     [JsonPropertyName("id")]
-    public string ID { get; set; }
+    public string? ID { get; set; }
 
     [JsonPropertyName("keyword")]
-    public string Keyword { get; set; }
+    public string? Keyword { get; set; }
 
     [JsonPropertyName("line")]
     public uint Line { get; set; }
 
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     [JsonPropertyName("uri")]
-    public string URI { get; set; }
+    public string? URI { get; set; }
 
     [JsonPropertyName("tags")]
     public List<Tag>? Tags { get; set; }

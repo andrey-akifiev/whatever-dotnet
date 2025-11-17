@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\WhateverDotNet.Cucumber.Json.Contracts\WhateverDotNet.Cucumber.Json.Contracts.csproj" />
       <ProjectReference Include="..\WhateverDotNet.Reporting.Contracts\WhateverDotNet.Reporting.Contracts.csproj" />
     </ItemGroup>
 

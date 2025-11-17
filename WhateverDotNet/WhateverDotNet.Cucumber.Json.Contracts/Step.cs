@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WhateverDotNet.Cucumber.Contracts;
+namespace WhateverDotNet.Cucumber.Json.Contracts;
 
 public class Step
 {
@@ -14,7 +14,7 @@ public class Step
     public string? Name { get; set; }
 
     [JsonPropertyName("result")]
-    public StepResult Result { get; set; }
+    public StepResult? Result { get; set; }
 
     [JsonPropertyName("match")]
     public StepMatch? Match { get; set; }

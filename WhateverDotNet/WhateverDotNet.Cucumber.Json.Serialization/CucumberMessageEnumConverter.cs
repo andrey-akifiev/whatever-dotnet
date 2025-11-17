@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace WhateverDotNet.Reporting.JsonFormatter;
+namespace WhateverDotNet.Cucumber.Json.Serialization;
 
 internal class CucumberMessageEnumConverter<T> : JsonConverter<T> where T : struct, Enum
 {
@@ -26,7 +26,7 @@ internal class CucumberMessageEnumConverter<T> : JsonConverter<T> where T : stru
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var stringValue = reader.GetString();
-        return _stringToEnum.TryGetValue(stringValue, out var enumValue) ? enumValue : default;
+        return _stringToEnum.TryGetValue(stringValue!, out var enumValue) ? enumValue : default;
     }
 
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
