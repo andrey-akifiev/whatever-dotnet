@@ -5,6 +5,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>WhateverDotNet.Reporting.JsonFormatter</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WhateverDotNet.Cucumber.Contracts\WhateverDotNet.Cucumber.Contracts.csproj" />
+    <ProjectReference Include="..\WhateverDotNet.Cucumber.Json.Contracts\WhateverDotNet.Cucumber.Json.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
