@@ -8,12 +8,11 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
-      <PackageReference Include="Microsoft.TeamFoundationServer.Client" Version="19.225.1" />
-      <PackageReference Include="Microsoft.VisualStudio.Services.Client" Version="19.225.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WhateverDotNet.Reporting.Contracts\WhateverDotNet.Reporting.Contracts.csproj" />
+      <ProjectReference Include="..\WhateverDotNet.Cucumber.Json.Contracts\WhateverDotNet.Cucumber.Json.Contracts.csproj" />
+      <ProjectReference Include="..\WhateverDotNet.Reports.Contracts\WhateverDotNet.Reports.Contracts.csproj" />
     </ItemGroup>
 
 </Project>

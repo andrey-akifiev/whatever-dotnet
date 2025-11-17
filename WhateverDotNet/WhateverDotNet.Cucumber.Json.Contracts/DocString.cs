@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace WhateverDotNet.Cucumber.Json.Contracts;
+namespace WhateverDotNet.Cucumber.Contracts;
 
 public class DocString
 {

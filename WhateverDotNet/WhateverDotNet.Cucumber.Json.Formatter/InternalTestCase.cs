@@ -1,6 +1,6 @@
 using Io.Cucumber.Messages.Types;
 
-namespace WhateverDotNet.Cucumber.Json.Formatter;
+namespace WhateverDotNet.Reporting.JsonFormatter;
     
 internal class InternalTestCase
 {

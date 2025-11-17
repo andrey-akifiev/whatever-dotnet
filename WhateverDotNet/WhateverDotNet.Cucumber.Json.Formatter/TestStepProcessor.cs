@@ -1,8 +1,7 @@
+using System.Text;
 using Io.Cucumber.Messages.Types;
 
-using System.Text;
-
-namespace WhateverDotNet.Cucumber.Json.Formatter;
+namespace WhateverDotNet.Reporting.JsonFormatter;
 
 internal static class TestStepProcessor
 {
@@ -82,7 +81,7 @@ internal static class TestStepProcessor
         };
     }
 
-    public static Contracts.Step TestStepToJSON(InternalTestStep step)
+    public static Cucumber.Contracts.Step TestStepToJSON(InternalTestStep step)
     {
         var status = step.Result.Status.ToString().ToLowerInvariant();
         ulong duration = 0;
@@ -93,13 +92,13 @@ internal static class TestStepProcessor
 
         if (step.Hook != null)
         {
-            return new Contracts.Step
+            return new Cucumber.Contracts.Step
             {
-                Match = new Contracts.StepMatch
+                Match = new Cucumber.Contracts.StepMatch
                 {
                     Location = MakeSourceReferenceLocation(step.Hook.SourceReference)
                 },
-                Result = new Contracts.StepResult
+                Result = new Cucumber.Contracts.StepResult
                 {
                     Status = status,
                     ErrorMessage = step.Result.Message,
@@ -120,16 +119,16 @@ internal static class TestStepProcessor
             location = MakeSourceReferenceLocation(step.StepDefinitions[0].SourceReference);
         }
 
-        var jsonStep = new Contracts.Step
+        var jsonStep = new Cucumber.Contracts.Step
         {
             Keyword = step.Step.Keyword,
             Name = step.PickleStep.Text,
             Line = (uint)step.Step.Location.Line,
-            Match = new Contracts.StepMatch
+            Match = new Cucumber.Contracts.StepMatch
             {
                 Location = location
             },
-            Result = new Contracts.StepResult
+            Result = new Cucumber.Contracts.StepResult
             {
                 Status = status,
                 ErrorMessage = step.Result.Message,
@@ -142,7 +141,7 @@ internal static class TestStepProcessor
         var docString = step.Step.DocString;
         if (docString != null)
         {
-            jsonStep.DocString = new Contracts.DocString
+            jsonStep.DocString = new Cucumber.Contracts.DocString
             {
                 Line = (uint)docString.Location.Line,
                 ContentType = docString.MediaType,
@@ -153,7 +152,7 @@ internal static class TestStepProcessor
         var datatable = step.Step.DataTable;
         if (datatable != null)
         {
-            jsonStep.Rows = new List<Contracts.DatatableRow>();
+            jsonStep.Rows = new List<Cucumber.Contracts.DatatableRow>();
             foreach (var row in datatable.Rows)
             {
                 var cells = new List<string>();
@@ -162,7 +161,7 @@ internal static class TestStepProcessor
                     cells.Add(cell.Value);
                 }
 
-                jsonStep.Rows.Add(new Contracts.DatatableRow
+                jsonStep.Rows.Add(new Cucumber.Contracts.DatatableRow
                 {
                     Cells = cells
                 });
@@ -172,10 +171,10 @@ internal static class TestStepProcessor
         return jsonStep;
     }
 
-    public static List<Contracts.Embedding> MakeEmbeddings(List<Attachment>? attachments)
+    public static List<Cucumber.Contracts.Embedding> MakeEmbeddings(List<Attachment>? attachments)
     {
         var embeddableAttachments = FilterAttachments(attachments, IsEmbeddable);
-        var jsonEmbeddings = new List<Contracts.Embedding>();
+        var jsonEmbeddings = new List<Cucumber.Contracts.Embedding>();
 
         foreach (var attachment in embeddableAttachments)
         {
@@ -189,7 +188,7 @@ internal static class TestStepProcessor
                 data = Convert.ToBase64String(Encoding.UTF8.GetBytes(attachment.Body));
             }
 
-            jsonEmbeddings.Add(new Contracts.Embedding
+            jsonEmbeddings.Add(new Cucumber.Contracts.Embedding
             {
                 Data = data,
                 MimeType = attachment.MediaType

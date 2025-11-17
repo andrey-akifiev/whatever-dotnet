@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <OutputType>Exe</OutputType>
+        <RootNamespace>WhateverDotNet.AzureDevOps.SyncTool</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WhateverDotNet.Reporting.Contracts\WhateverDotNet.Reporting.Contracts.csproj" />
+      <ProjectReference Include="..\WhateverDotNet.Reports.Contracts\WhateverDotNet.Reports.Contracts.csproj" />
     </ItemGroup>
 
 </Project>

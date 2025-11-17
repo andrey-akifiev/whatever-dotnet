@@ -1,4 +1,4 @@
-namespace WhateverDotNet.Cucumber.Json.Formatter;
+namespace WhateverDotNet.Reporting.JsonFormatter;
 
 internal class SortedTestSteps
 {

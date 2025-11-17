@@ -1,4 +1,4 @@
-﻿namespace WhateverDotNet.Reporting.Contracts;
+﻿namespace WhateverDotNet.Reports.Contracts;
 
 public class AgnosticTestResult
 {

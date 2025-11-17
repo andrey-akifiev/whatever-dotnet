@@ -1,6 +1,6 @@
 using Io.Cucumber.Messages.Types;
 
-namespace WhateverDotNet.Cucumber.Json.Formatter;
+namespace WhateverDotNet.Reporting.JsonFormatter;
 
 internal static class TestCaseProcessor
 {
@@ -54,9 +54,9 @@ internal static class TestCaseProcessor
         };
     }
 
-    public static List<Contracts.Scenario> TestCaseToJSON(InternalTestCase testCase)
+    public static List<Cucumber.Contracts.Scenario> TestCaseToJSON(InternalTestCase testCase)
     {
-        var elements = new List<Contracts.Scenario>();
+        var elements = new List<Cucumber.Contracts.Scenario>();
         var sortedSteps = testCase.SortedSteps();
 
         if (sortedSteps.Background.Count > 0)
@@ -78,11 +78,11 @@ internal static class TestCaseProcessor
         return elements;
     }
 
-    public static Contracts.Scenario BackgroundStepsToJSON(List<InternalTestStep> steps)
+    public static Cucumber.Contracts.Scenario BackgroundStepsToJSON(List<InternalTestStep> steps)
     {
         var background = steps[0].Background;
 
-        return new Contracts.Scenario
+        return new Cucumber.Contracts.Scenario
         {
             Keyword = background.Keyword,
             Name = background.Name,
@@ -93,7 +93,7 @@ internal static class TestCaseProcessor
         };
     }
 
-    public static Contracts.Scenario ScenarioStepsToJSON(InternalTestCase testCase, List<InternalTestStep> steps)
+    public static Cucumber.Contracts.Scenario ScenarioStepsToJSON(InternalTestCase testCase, List<InternalTestStep> steps)
     {
         var line = testCase.Scenario.Location.Line;
         var id = $"{MakeID(testCase.FeatureName)};{MakeID(testCase.Scenario.Name)}";
@@ -118,7 +118,7 @@ internal static class TestCaseProcessor
             id = $"{MakeID(testCase.FeatureName)};{MakeID(testCase.Scenario.Name)};{MakeID(exampleName)};{exampleIndex}";
         }
 
-        return new Contracts.Scenario
+        return new Cucumber.Contracts.Scenario
         {
             ID = id,
             Keyword = testCase.Scenario.Keyword,
@@ -131,9 +131,9 @@ internal static class TestCaseProcessor
         };
     }
 
-    public static List<Contracts.Step> MakeJSONSteps(List<InternalTestStep> steps)
+    public static List<Cucumber.Contracts.Step> MakeJSONSteps(List<InternalTestStep> steps)
     {
-        var jsonSteps = new List<Contracts.Step>(steps.Count);
+        var jsonSteps = new List<Cucumber.Contracts.Step>(steps.Count);
         for (int index = 0; index < steps.Count; index++)
         {
             jsonSteps.Add(TestStepProcessor.TestStepToJSON(steps[index]));
@@ -141,13 +141,13 @@ internal static class TestCaseProcessor
         return jsonSteps;
     }
 
-    public static List<Contracts.Tag> MakeJSONTags(List<Tag> tags)
+    public static List<Cucumber.Contracts.Tag> MakeJSONTags(List<Tag> tags)
     {
-        var jsonTags = new List<Contracts.Tag>(tags.Count);
+        var jsonTags = new List<Cucumber.Contracts.Tag>(tags.Count);
         for (int index = 0; index < tags.Count; index++)
         {
             var tag = tags[index];
-            jsonTags.Add(new Contracts.Tag
+            jsonTags.Add(new Cucumber.Contracts.Tag
             {
                 Name = tag.Name,
                 Line = (uint)tag.Location.Line

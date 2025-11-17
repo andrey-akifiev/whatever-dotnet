@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Services.TestManagement.TestPlanning.WebApi;
 
 using WhateverDotNet.Reporting.AzureDevOps.AzureDevOpsClient;
-using WhateverDotNet.Reporting.Contracts;
+using WhateverDotNet.Reports.Contracts;
 
 namespace WhateverDotNet.Reporting.AzureDevOps.Repositories;
 

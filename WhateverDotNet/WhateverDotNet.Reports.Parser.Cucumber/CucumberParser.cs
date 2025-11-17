@@ -1,11 +1,10 @@
 ﻿using System.Text.Json;
 
 using Microsoft.Extensions.Logging;
+using WhateverDotNet.Cucumber.Contracts;
+using WhateverDotNet.Reports.Contracts;
 
-using WhateverDotNet.Cucumber.Json.Contracts;
-using WhateverDotNet.Reporting.Contracts;
-
-namespace WhateverDotNet.Reporting.Cucumber.Parser;
+namespace WhateverDotNet.Reports.Parser.Cucumber;
 
 public class CucumberParser(CucumberParserOptions options, ILoggerFactory? loggerFactory = null)
     : ITestResultsParser

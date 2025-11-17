@@ -1,12 +1,10 @@
 ﻿using System.Text.Json;
-
 using CommandLine;
 using Cucumber.Messages;
 using Io.Cucumber.Messages.Types;
-
 using WhateverDotNet.Cucumber.Json.Serialization;
 
-namespace WhateverDotNet.Cucumber.Json.Formatter;
+namespace WhateverDotNet.Reporting.JsonFormatter;
 
 public class Program
 {
@@ -20,8 +18,8 @@ public class Program
     }
 
     private static Dictionary<string, InternalTestCase> testCaseById = new();
-    private static Dictionary<string, Contracts.Feature> jsonFeaturesByURI = new();
-    private static List<Contracts.Feature> jsonFeatures = new();
+    private static Dictionary<string, Cucumber.Contracts.Feature> jsonFeaturesByURI = new();
+    private static List<Cucumber.Contracts.Feature> jsonFeatures = new();
     private static MessageLookup lookup = new();
     private static bool verbose = false;
 
@@ -102,7 +100,7 @@ public class Program
         }
     }
 
-    private static Contracts.Feature FindOrCreateJsonFeature(Pickle pickle)
+    private static Cucumber.Contracts.Feature FindOrCreateJsonFeature(Pickle pickle)
     {
         if (!jsonFeaturesByURI.TryGetValue(pickle.Uri, out var jFeature))
         {
@@ -112,22 +110,22 @@ public class Program
                 throw new System.Exception($"No feature found for URI: {pickle.Uri}");
             }
 
-            jFeature = new Contracts.Feature
+            jFeature = new Cucumber.Contracts.Feature
             {
                 Description = gherkinDocumentFeature.Description,
-                Elements = new List<Contracts.Scenario>(),
+                Elements = new List<Cucumber.Contracts.Scenario>(),
                 ID = MakeId(gherkinDocumentFeature.Name),
                 Keyword = gherkinDocumentFeature.Keyword,
                 Line = (uint)gherkinDocumentFeature.Location.Line,
                 Name = gherkinDocumentFeature.Name,
                 URI = pickle.Uri,
-                Tags = new List<Contracts.Tag>(gherkinDocumentFeature.Tags.Count)
+                Tags = new List<Cucumber.Contracts.Tag>(gherkinDocumentFeature.Tags.Count)
             };
 
             for (int tagIndex = 0; tagIndex < gherkinDocumentFeature.Tags.Count; tagIndex++)
             {
                 var tag = gherkinDocumentFeature.Tags[tagIndex];
-                jFeature.Tags.Add(new Contracts.Tag
+                jFeature.Tags.Add(new Cucumber.Contracts.Tag
                 {
                     Line = (uint)tag.Location.Line,
                     Name = tag.Name

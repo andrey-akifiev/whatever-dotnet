@@ -11,13 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Components",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Abstractions", "WhateverDotNet.Abstractions\WhateverDotNet.Abstractions.csproj", "{D7E3ABA0-093A-438C-8704-CC2613A9F96F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Reporting.Contracts", "WhateverDotNet.Reporting.Contracts\WhateverDotNet.Reporting.Contracts.csproj", "{52CFC74F-0B6C-4B5F-9437-92AB24254FED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Reports.Contracts", "WhateverDotNet.Reports.Contracts\WhateverDotNet.Reports.Contracts.csproj", "{52CFC74F-0B6C-4B5F-9437-92AB24254FED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.AzureDevOps.SyncTool", "WhateverDotNet.AzureDevOps.SyncTool\WhateverDotNet.AzureDevOps.SyncTool.csproj", "{55FF0965-8BF5-4C30-8BE9-CA0AB677B1D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Reports.SyncTool", "WhateverDotNet.Reports.SyncTool\WhateverDotNet.Reports.SyncTool.csproj", "{55FF0965-8BF5-4C30-8BE9-CA0AB677B1D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Reporting.Cucumber.Parser", "WhateverDotNet.Reporting.Cucumber.Parser\WhateverDotNet.Reporting.Cucumber.Parser.csproj", "{1F6E738F-098E-4562-A5C9-BA9395AA3E61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Reports.Parser.Cucumber", "WhateverDotNet.Reports.Parser.Cucumber\WhateverDotNet.Reports.Parser.Cucumber.csproj", "{1F6E738F-098E-4562-A5C9-BA9395AA3E61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Reporting.AzureDevOps", "WhateverDotNet.Reporting.AzureDevOps\WhateverDotNet.Reporting.AzureDevOps.csproj", "{FEED1F69-2A5D-4B62-99B8-00126A534AA2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Reports.AzureDevOps", "WhateverDotNet.Reports.AzureDevOps\WhateverDotNet.Reports.AzureDevOps.csproj", "{FEED1F69-2A5D-4B62-99B8-00126A534AA2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Cucumber.Json.Formatter", "WhateverDotNet.Cucumber.Json.Formatter\WhateverDotNet.Cucumber.Json.Formatter.csproj", "{D469D7E4-470B-49D6-A523-38670BF2A3EB}"
 EndProject

@@ -1,4 +1,4 @@
-namespace WhateverDotNet.Reporting.Cucumber.Parser;
+namespace WhateverDotNet.Reports.Parser.Cucumber;
 
 public class CucumberParserOptions
 {

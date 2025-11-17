@@ -1,5 +1,5 @@
 using WhateverDotNet.Reporting.AzureDevOps.Repositories;
-using WhateverDotNet.Reporting.Contracts;
+using WhateverDotNet.Reports.Contracts;
 
 namespace WhateverDotNet.Reporting.AzureDevOps.Handlers;
 
