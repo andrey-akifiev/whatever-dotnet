@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Configuratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Cucumber.Json.Serialization", "WhateverDotNet.Cucumber.Json.Serialization\WhateverDotNet.Cucumber.Json.Serialization.csproj", "{66CE7014-1B2D-4483-B4C7-077CF18F0FDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Components.Material", "WhateverDotNet.Components.Material\WhateverDotNet.Components.Material.csproj", "{9FDC682F-5AA9-4F94-8D0E-1251B6E61BBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{66CE7014-1B2D-4483-B4C7-077CF18F0FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66CE7014-1B2D-4483-B4C7-077CF18F0FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66CE7014-1B2D-4483-B4C7-077CF18F0FDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FDC682F-5AA9-4F94-8D0E-1251B6E61BBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FDC682F-5AA9-4F94-8D0E-1251B6E61BBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FDC682F-5AA9-4F94-8D0E-1251B6E61BBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FDC682F-5AA9-4F94-8D0E-1251B6E61BBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

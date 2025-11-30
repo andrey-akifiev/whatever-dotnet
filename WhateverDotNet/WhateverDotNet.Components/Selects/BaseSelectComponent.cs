@@ -57,10 +57,12 @@ public abstract class BaseSelectComponent : BaseComponent<SelectComponentOptions
 
     public virtual async Task<string> SelectItemAsync(string? item, ForceOptions? options = null)
     {
-        if (GetOptions().Expandable != null && GetOptions().Expandable!.Value)
+        if (item != null && item.ToUpperInvariant() == nameof(SelectItems.ALL))
         {
-            await ExpandAsync().ConfigureAwait(false);
+            return await SelectItemsAsync().ConfigureAwait(false);
         }
+        
+        await TryExpandAsync().ConfigureAwait(false);
         
         var embeddedActions = GetOptions().EmbeddedActions;
         
@@ -95,11 +97,37 @@ public abstract class BaseSelectComponent : BaseComponent<SelectComponentOptions
         await GetLocator(GetXPathItem(item))
             .ClickAsync()
             .ConfigureAwait(false);
+        
+        Func<Task>? sideEffect = GetOptions().SideEffect;
+        if (sideEffect != null)
+        {
+            await sideEffect().ConfigureAwait(false);
+        }
+        
         await GetPage()
             .WaitForTimeoutAsync(100)
             .ConfigureAwait(false);
         
         return item!;
+    }
+
+    public virtual async Task<string> SelectItemsAsync()
+    {
+        await TryExpandAsync().ConfigureAwait(false);
+        
+        IReadOnlyList<ILocator> selectOptions =
+            await GetLocator(GetXPathItem())
+                .AllAsync()
+                .ConfigureAwait(false);
+
+        foreach (ILocator selectOption in selectOptions)
+        {
+            await selectOption
+                .CheckAsync()
+                .ConfigureAwait(false);
+        }
+
+        return nameof(SelectItems.ALL);
     }
     
     public override async Task<string> TypeAsync(string text, ForceOptions? options = null)
@@ -125,5 +153,17 @@ public abstract class BaseSelectComponent : BaseComponent<SelectComponentOptions
     protected Task<bool> IsExpandedAsync()
     {
         return GetLocator($"({GetXPathItem()})[1]").IsVisibleAsync();
+    }
+
+    protected async Task<bool> TryExpandAsync()
+    {
+        var result = GetOptions().Expandable != null && GetOptions().Expandable!.Value;
+
+        if (result)
+        {
+            await ExpandAsync().ConfigureAwait(false);
+        }
+        
+        return result;
     }
 }

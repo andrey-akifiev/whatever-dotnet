@@ -12,7 +12,7 @@ public class ComponentOptions
 
     // TODO: rename
     // Side-effect callback. Signature depends on your usage.
-    public Func<object?>? SideEffect { get; set; }
+    public Func<Task>? SideEffect { get; set; }
 
     // Can be an enum value (e.g. ComponentTypes) or a delegate/function.
     // Use a concrete type (ComponentTypes or Type/Delegate) if you prefer stricter typing.
