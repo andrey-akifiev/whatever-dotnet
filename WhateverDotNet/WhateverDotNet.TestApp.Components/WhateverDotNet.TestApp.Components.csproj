@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Icons\azure_colored.png" />
+    <None Remove="Assets\Icons\azure_grayed.png" />
+    <None Remove="Assets\Icons\copy_colored.png" />
+    <None Remove="Assets\Icons\copy_grayed.png" />
+    <None Remove="Assets\Icons\delete_disabled.png" />
+    <None Remove="Assets\Icons\delete_highlighted.png" />
+    <None Remove="Assets\Icons\delete_regular.png" />
+    <None Remove="Assets\Icons\direction.png" />
+    <None Remove="Assets\Icons\open_folder_colored.png" />
+    <None Remove="Assets\Icons\open_folder_grayed.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="MathConverter" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Themes\Generic.xaml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Page>
+  </ItemGroup>
+
+</Project>
