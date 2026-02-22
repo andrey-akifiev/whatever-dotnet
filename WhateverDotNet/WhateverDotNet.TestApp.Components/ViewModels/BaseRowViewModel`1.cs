@@ -5,10 +5,14 @@ using System.Windows.Input;
 namespace WhateverDotNet.TestApp.Components.ViewModels;
 
 public abstract class BaseRowViewModel<TModel>
-    : DirtyTrackingViewModel<TModel>
+    : RevertibleViewModel<TModel>
+        where TModel : class, ICloneable, IEquatable<TModel>
 {
     private readonly Action<BaseRowViewModel<TModel>> _onClone;
     private readonly Action<BaseRowViewModel<TModel>> _onDelete;
+
+    public event EventHandler? CloneRequested;
+    public event EventHandler? RemoveRequested;
 
     public BaseRowViewModel(
         TModel model,
@@ -31,4 +35,10 @@ public abstract class BaseRowViewModel<TModel>
     {
         return CloneModel(Current);
     }
+
+    protected virtual void OnCloneRequested()
+        => CloneRequested?.Invoke(this, EventArgs.Empty);
+
+    protected virtual void OnRemoveRequested()
+        => RemoveRequested?.Invoke(this, EventArgs.Empty);
 }

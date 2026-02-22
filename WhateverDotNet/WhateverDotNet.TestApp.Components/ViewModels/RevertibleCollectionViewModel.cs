@@ -10,7 +10,7 @@ using WhateverDotNet.TestApp.Components.Models;
 
 namespace WhateverDotNet.TestApp.Components.ViewModels;
 
-public class RevertibleCollectionViewModel<TItemViewModel, TItemModel>
+public abstract class RevertibleCollectionViewModel<TItemViewModel, TItemModel>
     : BaseViewModel,
         ICollection<TItemViewModel>,
         IDisposable,
@@ -22,9 +22,12 @@ public class RevertibleCollectionViewModel<TItemViewModel, TItemModel>
         INotifyCollectionChanged,
         INotifyPropertyChanged,
         IRevertibleViewModel<TItemModel>
-        where TItemViewModel : BaseRevertibleViewModel<TItemModel>, IRevertibleViewModel<TItemModel>
-        where TItemModel : class, ICloneable, IEquatable<TItemModel>, ISampleProvider<TItemModel>
+        where TItemViewModel
+            : RevertibleItemViewModel<TItemModel>, IRevertibleViewModel<TItemModel>
+        where TItemModel
+            : class, ICloneable, IEquatable<TItemModel>, ISampleProvider<TItemModel>
 {
+    private bool _isDirtyPrev = false;
     private List<TItemModel> _originalModels = new();
 
     public event NotifyCollectionChangedEventHandler? CollectionChanged;
@@ -33,10 +36,7 @@ public class RevertibleCollectionViewModel<TItemViewModel, TItemModel>
     {
         Current = itemViewModels;
 
-        Current.CollectionChanged += OnInnerCollectionChanged;
-        Current.CollectionChanged += OnCollectionChanged;
-
-        SubscribeItemsPropertyChanged(Current);
+        Current.CollectionChanged += OnItemsChanged;
 
         Snapshot();
 
@@ -96,11 +96,9 @@ public class RevertibleCollectionViewModel<TItemViewModel, TItemModel>
     }
 
     public void Clear()
-    {
-        throw new NotImplementedException();
-    }
+        => Current.Clear();
 
-    public void Clone(TItemViewModel item)
+    public void CloneItem(TItemViewModel item)
     {
         TItemModel clonedModel = CloneModel(item.Current);
         TItemViewModel clonedItem = CreateNewItem(clonedModel);
@@ -122,10 +120,9 @@ public class RevertibleCollectionViewModel<TItemViewModel, TItemModel>
 
     public override void Dispose()
     {
-        Current.CollectionChanged -= OnCollectionChanged;
-        Current.CollectionChanged -= OnInnerCollectionChanged;
+        Current.CollectionChanged -= OnItemsChanged;
 
-        UnsubscribeItemsPropertyChanged(Current);
+        UnsubscribeItemsEvents(Current);
 
         base.Dispose();
     }
@@ -138,9 +135,15 @@ public class RevertibleCollectionViewModel<TItemViewModel, TItemModel>
 
     public void RaiseDirty()
     {
+        bool isDirtyCur = IsDirty;
+
+        if (_isDirtyPrev == isDirtyCur)
+        {
+            return;
+        }
+
         OnPropertyChanged(nameof(IsDirty));
-        // TODO
-        // (RevertCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        RaiseRevertCanExecute();
     }
 
     public bool Remove(TItemViewModel item)
@@ -205,34 +208,45 @@ public class RevertibleCollectionViewModel<TItemViewModel, TItemModel>
         => IsDirty;
 
     protected virtual TItemViewModel CreateNewItem()
-    {
-        throw new NotImplementedException();
-    }
+        => CreateNewItem(TItemModel.CreateSample());
 
-    protected virtual TItemViewModel CreateNewItem(TItemModel model)
-    {
-        throw new NotImplementedException();
-    }
+    protected abstract TItemViewModel CreateNewItem(TItemModel model);
 
-    private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        => CollectionChanged?.Invoke(this, e);
+    protected virtual void RaiseRevertCanExecute()
+        => (RevertCommand as RelayCommand)?.NotifyCanExecuteChanged();
 
-    private void OnInnerCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void OnItemsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        SubscribeItemsPropertyChanged(e.NewItems);
-        UnsubscribeItemsPropertyChanged(e.OldItems);
+        SubscribeItemsEvents(e.NewItems);
+        UnsubscribeItemsEvents(e.OldItems);
         RaiseDirty();
+
+        CollectionChanged?.Invoke(sender, e);
+    }
+
+    private void OnItemCloneRequested(
+        object? sender,
+        RevertibleItemViewModelActionRequestedEventArgs<RevertibleItemViewModel<TItemModel>> e)
+    {
+        CloneItem((TItemViewModel)e.Item);
     }
 
     private void OnItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(DirtyTrackingViewModel<TItemViewModel>))
+        if (e.PropertyName == nameof(IRevertibleViewModel<>.IsDirty))
         {
             RaiseDirty();
         }
     }
 
-    private void SubscribeItemsPropertyChanged(IList? collectionItems)
+    private void OnItemRemoveRequested(
+        object? sender,
+        RevertibleItemViewModelActionRequestedEventArgs<RevertibleItemViewModel<TItemModel>> e)
+    {
+        Remove((TItemViewModel)e.Item);
+    }
+
+    private void SubscribeItemsEvents(IList? collectionItems)
     {
         if (collectionItems == null)
         {
@@ -241,15 +255,25 @@ public class RevertibleCollectionViewModel<TItemViewModel, TItemModel>
 
         foreach (object? collectionItem in collectionItems)
         {
-            SubscribeItemPropertyChanged(collectionItem);
+            SubscribeItemEvents(collectionItem);
         }
     }
 
-    private void SubscribeItemPropertyChanged(object? collectionItem)
-        => (collectionItem as TItemViewModel)
-            ?.PropertyChanged += OnItemPropertyChanged;
+    private void SubscribeItemEvents(object? collectionItem)
+    {
+        TItemViewModel? item = collectionItem as TItemViewModel;
 
-    private void UnsubscribeItemsPropertyChanged(IList? collectionItems)
+        if (item == null)
+        {
+            return;
+        }
+
+        item.CloneRequested += OnItemCloneRequested;
+        item.PropertyChanged += OnItemPropertyChanged;
+        item.RemoveRequested += OnItemRemoveRequested;
+    }
+
+    private void UnsubscribeItemsEvents(IList? collectionItems)
     {
         if (collectionItems == null)
         {
@@ -258,13 +282,23 @@ public class RevertibleCollectionViewModel<TItemViewModel, TItemModel>
 
         foreach (object? collectionItem in collectionItems)
         {
-            UnsubscribeItemPropertyChanged(collectionItem);
+            UnsubscribeItemEvents(collectionItem);
         }
     }
 
-    private void UnsubscribeItemPropertyChanged(object? collectionItem)
-        => (collectionItem as TItemViewModel)
-            ?.PropertyChanged -= OnItemPropertyChanged;
+    private void UnsubscribeItemEvents(object? collectionItem)
+    {
+        TItemViewModel? item = collectionItem as TItemViewModel;
+
+        if (item == null)
+        {
+            return;
+        }
+
+        item.CloneRequested -= OnItemCloneRequested;
+        item.PropertyChanged -= OnItemPropertyChanged;
+        item.RemoveRequested -= OnItemRemoveRequested;
+    }
 
     public IEnumerator<TItemViewModel> GetEnumerator()
         => Current.GetEnumerator();

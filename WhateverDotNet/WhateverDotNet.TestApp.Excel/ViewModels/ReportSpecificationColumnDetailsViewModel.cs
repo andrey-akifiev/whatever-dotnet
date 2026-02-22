@@ -3,13 +3,11 @@ using WhateverDotNet.TestApp.Excel.Models;
 
 namespace WhateverDotNet.TestApp.Excel.ViewModels;
 
-public class ReportSpecificationColumnDetailsViewModel : BaseRowViewModel<ReportSpecificationColumnModel>
+public class ReportSpecificationColumnDetailsViewModel
+    : RevertibleItemViewModel<ReportSpecificationColumnModel>
 {
-    public ReportSpecificationColumnDetailsViewModel(
-        ReportSpecificationColumnModel originalValues,
-        Action<BaseRowViewModel<ReportSpecificationColumnModel>> onClone,
-        Action<BaseRowViewModel<ReportSpecificationColumnModel>> onDelete)
-        : base(originalValues, onClone, onDelete)
+    public ReportSpecificationColumnDetailsViewModel(ReportSpecificationColumnModel originalValue)
+        : base(originalValue)
     {
     }
 
@@ -115,10 +113,4 @@ public class ReportSpecificationColumnDetailsViewModel : BaseRowViewModel<Report
             nameof(IsValuable),
             nameof(Type));
     }
-
-    protected override bool AreEqual(ReportSpecificationColumnModel a, ReportSpecificationColumnModel b) =>
-        a.Equals(b);
-
-    protected override ReportSpecificationColumnModel CloneModel(ReportSpecificationColumnModel source) =>
-        (ReportSpecificationColumnModel)source.Clone();
 }

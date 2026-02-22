@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 
 using WhateverDotNet.TestApp.Components.ViewModels;
+using WhateverDotNet.TestApp.Excel.Components.TablePanel;
 using WhateverDotNet.TestApp.Excel.Models;
 
 namespace WhateverDotNet.TestApp.Excel.ViewModels;
@@ -12,26 +13,23 @@ public class ReportSpecificationColumnsDetailsViewModel
         : base(new ObservableCollection<ReportSpecificationColumnDetailsViewModel>())
     {
     }
-
-    public override void AddRange(IEnumerable<ReportSpecificationColumnModel> models)
+    public ObservableCollection<RowVm> Rows { get; } =
+            new ObservableCollection<RowVm>
+            {
+                new() { A = "One", B = "Alpha" },
+                new() { A = "Two", B = "Beta" },
+                new() { A = "Three", B = "Gamma" }
+            };
+    public void AddRange(IEnumerable<ReportSpecificationColumnModel> items)
     {
-        foreach (var viewModel in models.Select(CreateNewRow))
+        foreach (var item in items)
         {
-            Rows.Add(viewModel);
+            this.Add(CreateNewItem(item));
         }
     }
 
-    protected override ReportSpecificationColumnModel CloneModel(ReportSpecificationColumnModel model)
-        => (ReportSpecificationColumnModel)model.Clone();
-
-    protected override ReportSpecificationColumnDetailsViewModel CreateNewRow() =>
-        CreateNewRow(ReportSpecificationColumnModel.CreateSample());
-
-    protected override ReportSpecificationColumnDetailsViewModel CreateNewRow(ReportSpecificationColumnModel model)
+    protected override ReportSpecificationColumnDetailsViewModel CreateNewItem(ReportSpecificationColumnModel model)
     {
-        return new ReportSpecificationColumnDetailsViewModel(
-            model,
-            onClone: rvm => CloneRow((ReportSpecificationColumnDetailsViewModel)rvm),
-            onDelete: rvm => DeleteRow((ReportSpecificationColumnDetailsViewModel)rvm));
+        return new ReportSpecificationColumnDetailsViewModel(model);
     }
 }

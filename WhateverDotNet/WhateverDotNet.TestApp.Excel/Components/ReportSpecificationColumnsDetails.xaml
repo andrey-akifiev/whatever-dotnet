@@ -10,13 +10,15 @@
              xmlns:converters="clr-namespace:WhateverDotNet.TestApp.Components.Converters;assembly=WhateverDotNet.TestApp.Components"
              xmlns:dvms="clr-namespace:WhateverDotNet.TestApp.Excel.DesignData"
              xmlns:local="clr-namespace:WhateverDotNet.TestApp.Excel.Components"
+             xmlns:tp="clr-namespace:WhateverDotNet.TestApp.Excel.Components.TablePanel"
+             xmlns:et="clr-namespace:WhateverDotNet.TestApp.Excel.Components.EditableTable"
              xmlns:models="clr-namespace:WhateverDotNet.TestApp.Excel.Models"
              xmlns:vms="clr-namespace:WhateverDotNet.TestApp.Excel.ViewModels"
              
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="900"
+             d:DesignHeight="450" d:DesignWidth="1200"
              d:DataContext="{d:DesignInstance Type={x:Type dvms:DReportSpecificationColumnsDetailsViewModel}, IsDesignTimeCreatable=True}">
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -36,9 +38,248 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <DockPanel
+    <et:EditableTable/>
+
+    <!--<tp:TablePanel ItemsSource="{Binding Current}">
+        <tp:TablePanel.Columns>
+            <tp:TableColumn Header="Name" WidthType="Star" Width="1" MinWidth="100"/>
+            <tp:TableColumn Header="Display Name" WidthType="Star" Width="1" MinWidth="100"/>
+            <tp:TableColumn Header="Type" WidthType="Star" Width="1" MinWidth="100"/>
+            <tp:TableColumn Header="Format" WidthType="Star" Width="1" MinWidth="100"/>
+            <tp:TableColumn Header="Comparable" WidthType="Star" Width="1" MinWidth="100"/>
+            <tp:TableColumn Header="Valuable" WidthType="Star" Width="1" MinWidth="100"/>
+        </tp:TablePanel.Columns>
+
+        <tp:TablePanel.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding Columns[0].Width,
+                                RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                    <ColumnDefinition Width="{Binding Columns[1].Width,
+                                RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                    <ColumnDefinition Width="{Binding Columns[2].Width,
+                        RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                    <ColumnDefinition Width="{Binding Columns[3].Width,
+                        RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                    <ColumnDefinition Width="{Binding Columns[4].Width,
+                        RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                    <ColumnDefinition Width="{Binding Columns[5].Width,
+                        RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Column A" FontWeight="Bold"/>
+                <TextBlock Grid.Column="1" Text="Column B" FontWeight="Bold"/>
+            </Grid>
+        </tp:TablePanel.Header>
+
+        <tp:TablePanel.RowTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{Binding Columns[0].Width,
+                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                        <ColumnDefinition Width="{Binding Columns[1].Width,
+                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                        <ColumnDefinition Width="{Binding Columns[2].Width,
+                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                        <ColumnDefinition Width="{Binding Columns[3].Width,
+                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                        <ColumnDefinition Width="{Binding Columns[4].Width,
+                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                        <ColumnDefinition Width="{Binding Columns[5].Width,
+                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Text="{Binding Name}" Margin="2"/>
+                    <TextBox Grid.Column="1" Text="{Binding DisplayName}" Margin="2"/>
+                    <TextBox Grid.Column="2" Text="{Binding Type}" Margin="2"/>
+                    <TextBox Grid.Column="3" Text="{Binding Format}" Margin="2"/>
+                    <TextBox Grid.Column="4" Text="{Binding IsComparable}" Margin="2"/>
+                    <TextBox Grid.Column="4" Text="{Binding IsValuable}" Margin="2"/>
+                </Grid>
+            </DataTemplate>
+        </tp:TablePanel.RowTemplate>
+    </tp:TablePanel>-->
+    <!--<StackPanel>--><!--
+    <Grid Grid.IsSharedSizeScope="True"
+          HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        --><!-- Header --><!--
+        <Grid 
+            Grid.Column="0"
+            Grid.Row="0"
+            HorizontalAlignment="Stretch"
+            ShowGridLines="True">
+            --><!--<Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>--><!--
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition 
+                    SharedSizeGroup="nameSizeGroup"/>
+                <ColumnDefinition
+                    SharedSizeGroup="displayNameSizeGroup"/>
+                <ColumnDefinition
+                    SharedSizeGroup="typeSizeGroup"/>
+                <ColumnDefinition
+                    SharedSizeGroup="formatSizeGroup"/>
+                <ColumnDefinition
+                    SharedSizeGroup="valuableSizeGroup"/>
+                <ColumnDefinition
+                    SharedSizeGroup="comparableSizeGroup"/>
+                <ColumnDefinition
+                    SharedSizeGroup="actionsSizeGroup"/>
+            </Grid.ColumnDefinitions>
+
+            <controls:SimplifiedTextBlock
+                Grid.Column="0"
+                Text="Name"/>
+            <controls:SimplifiedTextBlock
+                Grid.Column="1"
+                Text="Display Name"/>
+            <controls:SimplifiedTextBlock
+                Grid.Column="2"
+                Text="Type"/>
+            <controls:SimplifiedTextBlock
+                Grid.Column="3"
+                Text="Format"/>
+            <controls:SimplifiedTextBlock
+                Grid.Column="4"
+                Text="Valuable"/>
+            <controls:SimplifiedTextBlock
+                Grid.Column="5"
+                Text="Comparable"/>
+            <controls:SimplifiedTextBlock
+                    Grid.Column="6"
+                    Text="Actions"/>
+        </Grid>
+
+        --><!-- Rows --><!--
+        <ItemsControl
+            Grid.Column="0"
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            ItemsSource="{Binding Current}">
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border 
+                        HorizontalAlignment="Stretch"
+                        BorderBrush="Red"
+                        BorderThickness="1">
+                    <Grid HorizontalAlignment="Stretch" ShowGridLines="True">
+                            --><!--<Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>--><!--
+                            <Grid.ColumnDefinitions>
+                            <ColumnDefinition 
+                                SharedSizeGroup="nameSizeGroup"
+                                MaxWidth="120"/>
+                            <ColumnDefinition
+                                SharedSizeGroup="displayNameSizeGroup"
+                                />
+                            <ColumnDefinition
+                                SharedSizeGroup="typeSizeGroup"
+                                />
+                            <ColumnDefinition
+                                SharedSizeGroup="formatSizeGroup"
+                                />
+                            <ColumnDefinition
+                                SharedSizeGroup="valuableSizeGroup"
+                                />
+                            <ColumnDefinition
+                                SharedSizeGroup="comparableSizeGroup"
+                                />
+                            <ColumnDefinition
+                                SharedSizeGroup="actionsSizeGroup"
+                                />
+                        </Grid.ColumnDefinitions>
+                        <controls:SimplifiedTextBox
+                            Grid.Column="0"
+                            FontSize="{DynamicResource FontSize_Small}"
+                            OriginalValue="{Binding NameOriginal}"
+                            PlaceholderValue="Name"
+                            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <controls:SimplifiedTextBox
+                            Grid.Column="1"
+                            FontSize="{DynamicResource FontSize_Small}"
+                            OriginalValue="{Binding DisplayNameOriginal}"
+                            PlaceholderValue="Display Name"
+                            Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <controls:SimplifiedTextBox
+                            Grid.Column="2"
+                            FontSize="{DynamicResource FontSize_Small}"
+                            OriginalValue="{Binding DisplayNameOriginal}"
+                            PlaceholderValue="Type"
+                            Text="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <controls:SimplifiedTextBox
+                            Grid.Column="3"
+                            FontSize="{DynamicResource FontSize_Small}"
+                            OriginalValue="{Binding DisplayNameOriginal}"
+                            PlaceholderValue="Format"
+                            Text="{Binding Format, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <controls:SimplifiedTextBox
+                            Grid.Column="4"
+                            FontSize="{DynamicResource FontSize_Small}"
+                            OriginalValue="{Binding DisplayNameOriginal}"
+                            PlaceholderValue="Name"
+                            Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <controls:SimplifiedTextBox
+                            Grid.Column="5"
+                            FontSize="{DynamicResource FontSize_Small}"
+                            OriginalValue="{Binding DisplayNameOriginal}"
+                            PlaceholderValue="Name"
+                            Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <StackPanel 
+                            Grid.Column="6"
+                            Orientation="Horizontal">
+                            <controls:CopyIconButton
+                                Command="{Binding CloneCommand}"
+                                Margin="2 0 2 0"
+                                Size="14"/>
+                            <controls:UndoIconButton
+                                Command="{Binding RevertCommand}"
+                                Margin="2 0 2 0"
+                                Size="14"/>
+                            <controls:TrashIconButton
+                                Command="{Binding RemoveCommand}"
+                                Margin="2 0 2 0"
+                                Size="14"/>
+                        </StackPanel>
+                    </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>-->
+    <!--<DockPanel
             Background="{DynamicResource BackgroundRegularBrush}">
-        <!-- Common Table Controls -->
+        -->
+    <!-- Common Table Controls -->
+    <!--
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -58,14 +299,14 @@
                 Grid.Column="1"
 
                 Content="Add Column"
-                Command="{Binding AddRowCommand}"
+                Command="{Binding AddCommand}"
                 Margin="0 0 8 0"
                 Size="14"/>
         </Grid>
 
         <DataGrid
             DockPanel.Dock="Bottom"
-            ItemsSource="{Binding Rows}"
+            ItemsSource="{Binding Current}"
             PreviewMouseLeftButtonDown="DataGrid_PreviewMouseLeftButtonDown">
 
             <DataGrid.Resources>
@@ -253,7 +494,7 @@
                                     Margin="2 0 2 0"
                                     Size="14"/>
                                 <controls:TrashIconButton
-                                    Command="{Binding DeleteCommand}"
+                                    Command="{Binding RemoveCommand}"
                                     Margin="2 0 2 0"
                                     Size="14"/>
                             </StackPanel>
@@ -263,4 +504,5 @@
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
+    </StackPanel>-->
 </UserControl>
