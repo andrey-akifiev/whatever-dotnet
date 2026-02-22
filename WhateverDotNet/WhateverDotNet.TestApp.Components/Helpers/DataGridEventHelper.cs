@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -53,6 +53,8 @@ public static class DataGridEventHelper
                         row.IsSelected = true;
                     }
                 }
+                // Enter edit mode on first click so the grid is "always ready to edit"
+                dataGrid.BeginEdit(e);
             }
         }
 

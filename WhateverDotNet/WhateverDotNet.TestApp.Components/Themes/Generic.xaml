@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     
@@ -170,6 +170,14 @@
     <Style TargetType="{x:Type controls:UndoIconButton}"
            BasedOn="{StaticResource {x:Type controls:BaseIconButton}}">
         <Setter Property="IconData" Value="M22.535,8.46A4.965,4.965,0,0,0,19,7h0L2.8,7,7.1,2.7A1,1,0,0,0,5.682,1.288L.732,6.237a2.5,2.5,0,0,0,0,3.535l4.95,4.951A1,1,0,1,0,7.1,13.309L2.788,9,19,9h0a3,3,0,0,1,3,3v7a3,3,0,0,1-3,3H5a1,1,0,0,0,0,2H19a5.006,5.006,0,0,0,5-5V12A4.969,4.969,0,0,0,22.535,8.46Z"/>
+    </Style>
+
+    <Style TargetType="{x:Type controls:SignInIconButton}"
+           BasedOn="{StaticResource {x:Type controls:BaseIconButton}}">
+        <Setter Property="Content" Value="Sign In"/>
+        <Setter Property="IconPosition" Value="Left"/>
+        <!-- Sign-in / login icon: person with arrow (log in) -->
+        <Setter Property="IconData" Value="M12,12a4,4,0,1,0-4-4A4,4,0,0,0,12,12Zm6,2a1,1,0,0,0-1-1H7a3,3,0,0,0-3,3v6a1,1,0,0,0,2,0V16h3v3a1,1,0,0,0,2,0V16h2v4a1,1,0,0,0,2,0V14h2A1,1,0,0,0,18,14Zm-4-6h4.586L15,11.586,16.414,13,21,8.414V13a1,1,0,0,0,2,0V7a1,1,0,0,0-1-1H14a1,1,0,0,0,0,2Z"/>
     </Style>
     
     <!-- LABELS STYLES -->
@@ -639,6 +647,336 @@
                                     Value="Visible"/>
                         </Trigger>
 
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- COMBO BOXES STYLES -->
+    <Style x:Key="ComboBox_CommonStyle"
+           TargetType="{x:Type controls:BaseComboBox}">
+        <Setter Property="Background" Value="{DynamicResource Background_Text_RegularBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Border_RegularBrush}"/>
+        <Setter Property="BorderThickness" Value="{DynamicResource BorderThickness_Tiny}"/>
+
+        <Setter Property="FontFamily" Value="{DynamicResource FontFamily_Regular}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSize_Regular}"/>
+        <Setter Property="FontStyle" Value="Normal"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+
+        <Setter Property="Foreground" Value="{DynamicResource Foreground_Text_RegularBrush}"/>
+
+        <Setter Property="MinHeight" Value="30"/>
+
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:BaseComboBox}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" MinHeight="{TemplateBinding MinHeight}"/>
+                        </Grid.RowDefinitions>
+
+                        <Border x:Name="cmbBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{DynamicResource CornerRadius_IconButton_Regular}"
+                                Grid.Row="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Grid.Column="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="20"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter x:Name="PART_ContentSite"
+                                                      Content="{TemplateBinding SelectedItem}"
+                                                      ContentTemplate="{TemplateBinding ItemTemplate}"
+                                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      Margin="{Binding ContentMargin,
+                                                                       Mode=OneWay,
+                                                                       RelativeSource={RelativeSource AncestorType={x:Type controls:BaseComboBox}}}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    <controls:PlaceholderLabel
+                                        x:Name="cmbPlaceholder"
+                                        Content="{Binding PlaceholderValue,
+                                                          Mode=OneWay,
+                                                          RelativeSource={RelativeSource AncestorType={x:Type controls:BaseComboBox}}}"
+                                        Visibility="Collapsed"/>
+                                    <ToggleButton x:Name="PART_DropDownToggle"
+                                                  Background="Transparent"
+                                                  BorderThickness="0"
+                                                  Grid.ColumnSpan="2"
+                                                  Focusable="False"
+                                                  IsTabStop="False">
+                                        <ToggleButton.Template>
+                                            <ControlTemplate TargetType="ToggleButton">
+                                                <Grid>
+                                                    <Path x:Name="cmbArrow"
+                                                          Data="M0 0 L4 4 L8 0 Z"
+                                                          Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type controls:BaseComboBox}}}"
+                                                          HorizontalAlignment="Right"
+                                                          Margin="0 0 8 0"
+                                                          VerticalAlignment="Center"
+                                                          Stretch="Uniform"/>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </ToggleButton.Template>
+                                    </ToggleButton>
+                                </Grid>
+
+                                <controls:UndoIconButton
+                                    x:Name="btnRevert"
+                                    Command="{Binding RevertValueCommand,
+                                                      Mode=OneWay,
+                                                      RelativeSource={RelativeSource AncestorType={x:Type controls:BaseComboBox}}}"
+                                    Focusable="False"
+                                    Grid.Column="1"
+                                    Margin="2 0 2 0"
+                                    Size="10"
+                                    Visibility="Collapsed"/>
+
+                                <controls:ClearIconButton
+                                    x:Name="btnClear"
+                                    Command="{Binding ClearValueCommand,
+                                                      Mode=OneWay,
+                                                      RelativeSource={RelativeSource AncestorType={x:Type controls:BaseComboBox}}}"
+                                    Focusable="False"
+                                    Grid.Column="2"
+                                    Margin="2 0 2 0"
+                                    Size="10"
+                                    Style="{DynamicResource ClearIconButton_EmbeddedStyle}"
+                                    Visibility="Collapsed"/>
+
+                                <controls:CopyIconButton
+                                    x:Name="btnCopy"
+                                    Focusable="False"
+                                    Grid.Column="3"
+                                    Margin="2 0 2 0"
+                                    Size="10"
+                                    Visibility="Collapsed">
+                                    <Button.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource ClipboardFormatConverter}">
+                                            <Binding Path="SelectedItem"
+                                                     Mode="OneWay"
+                                                     RelativeSource="{RelativeSource AncestorType={x:Type controls:BaseComboBox}}"/>
+                                            <Binding Path="CopyToClipboardFormat"
+                                                     Mode="OneWay"
+                                                     RelativeSource="{RelativeSource AncestorType={x:Type controls:BaseComboBox}}"/>
+                                        </MultiBinding>
+                                    </Button.CommandParameter>
+                                </controls:CopyIconButton>
+                            </Grid>
+                        </Border>
+
+                        <Popup x:Name="PART_Popup"
+                               AllowsTransparency="True"
+                               Focusable="False"
+                               IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                               Placement="Bottom"
+                               PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                               PopupAnimation="Slide">
+                            <Grid x:Name="DropDown"
+                                  MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                  MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Border x:Name="DropDownBorder"
+                                        Background="{DynamicResource Background_Text_RegularBrush}"
+                                        BorderBrush="{DynamicResource Border_RegularBrush}"
+                                        BorderThickness="1">
+                                    <ScrollViewer x:Name="DropDownScrollViewer"
+                                                  Margin="4 2">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ShowCopy" Value="True">
+                            <Setter TargetName="btnCopy"
+                                    Property="Visibility"
+                                    Value="Visible"/>
+                        </Trigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowClear" Value="True"/>
+                                <Condition Property="IsDropDownOpen" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="btnClear"
+                                    Property="Visibility"
+                                    Value="Visible"/>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ShowRevert" Value="True"/>
+                                <Condition Property="IsDropDownOpen" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="btnRevert"
+                                    Property="Visibility"
+                                    Value="Visible"/>
+                        </MultiTrigger>
+
+                        <Trigger Property="SelectedItem" Value="{x:Null}">
+                            <Setter TargetName="btnClear"
+                                    Property="IsEnabled"
+                                    Value="False"/>
+                            <Setter TargetName="cmbPlaceholder"
+                                    Property="Visibility"
+                                    Value="Visible"/>
+                        </Trigger>
+
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter TargetName="cmbPlaceholder"
+                                    Property="Visibility"
+                                    Value="Collapsed"/>
+                            <Setter TargetName="cmbBorder"
+                                    Property="BorderBrush"
+                                    Value="{DynamicResource Border_HighlightedBrush}"/>
+                        </Trigger>
+
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter TargetName="cmbBorder"
+                                    Property="BorderBrush"
+                                    Value="{DynamicResource Border_ErrorBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:BaseComboBox}"
+           BasedOn="{StaticResource ComboBox_CommonStyle}">
+    </Style>
+
+    <Style TargetType="{x:Type controls:LabeledComboBox}"
+           BasedOn="{StaticResource ComboBox_CommonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:LabeledComboBox}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <controls:TextLabel
+                            x:Name="cmbLabel"
+                            Grid.Row="0"
+                            Margin="5 0 0 2"
+                            Visibility="Visible">
+                            <controls:TextLabel.Content>
+                                <PriorityBinding FallbackValue="">
+                                    <Binding Path="LabelValue"
+                                             RelativeSource="{RelativeSource AncestorType={x:Type controls:LabeledComboBox}}"/>
+                                    <Binding Path="PlaceholderValue"
+                                             RelativeSource="{RelativeSource AncestorType={x:Type controls:LabeledComboBox}}"/>
+                                </PriorityBinding>
+                            </controls:TextLabel.Content>
+                        </controls:TextLabel>
+
+                        <controls:BaseComboBox
+                            x:Name="cmbInput"
+                            Grid.Row="1"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            ContentMargin="{Binding ContentMargin, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"
+                            CopyToClipboardFormat="{Binding CopyToClipboardFormat, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"
+                            OriginalValue="{Binding OriginalValue, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"
+                            PlaceholderValue="{Binding PlaceholderValue, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"
+                            ShowClear="{Binding ShowClear, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"
+                            ShowCopy="{Binding ShowCopy, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"
+                            ShowPlaceholder="{Binding ShowPlaceholder, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"
+                            ShowRevert="{Binding ShowRevert, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"
+                            ItemsSource="{Binding ItemsSource, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"
+                            SelectedItem="{Binding SelectedItem, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"
+                            DisplayMemberPath="{Binding DisplayMemberPath, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"
+                            SelectedValuePath="{Binding SelectedValuePath, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:LabeledComboBox}}}"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="SelectedItem" Value="{x:Null}">
+                            <Setter TargetName="cmbLabel" Property="Visibility" Value="Hidden"/>
+                        </Trigger>
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter TargetName="cmbLabel" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:SimplifiedComboBox}"
+           BasedOn="{StaticResource ComboBox_CommonStyle}">
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0 0 0 1"/>
+        <Setter Property="MinHeight" Value="10"/>
+        <Setter Property="ShowClear" Value="False"/>
+        <Setter Property="ShowCopy" Value="False"/>
+        <Setter Property="ShowPlaceholder" Value="True"/>
+        <Setter Property="ShowRevert" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+    </Style>
+
+    <Style TargetType="{x:Type controls:RegularComboBox}"
+           BasedOn="{StaticResource ComboBox_CommonStyle}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:RegularComboBox}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <controls:LabeledComboBox
+                            x:Name="cmbInput"
+                            Grid.Row="0"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            ContentMargin="{Binding ContentMargin, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            CopyToClipboardFormat="{Binding CopyToClipboardFormat, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            LabelValue="{Binding LabelValue, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            OriginalValue="{Binding OriginalValue, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            PlaceholderValue="{Binding PlaceholderValue, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            ShowClear="{Binding ShowClear, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            ShowCopy="{Binding ShowCopy, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            ShowPlaceholder="{Binding ShowPlaceholder, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            ShowRevert="{Binding ShowRevert, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            ItemsSource="{Binding ItemsSource, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            SelectedItem="{Binding SelectedItem, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            DisplayMemberPath="{Binding DisplayMemberPath, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"
+                            SelectedValuePath="{Binding SelectedValuePath, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type controls:RegularComboBox}}}"/>
+
+                        <controls:ErrorTextLabel
+                            x:Name="cmbMessage"
+                            Grid.Row="1"
+                            Visibility="Hidden"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter TargetName="cmbMessage" Property="Content" Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <Setter TargetName="cmbMessage" Property="Foreground" Value="{DynamicResource Foreground_Text_ErrorBrush}"/>
+                            <Setter TargetName="cmbMessage" Property="Visibility" Value="Visible"/>
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

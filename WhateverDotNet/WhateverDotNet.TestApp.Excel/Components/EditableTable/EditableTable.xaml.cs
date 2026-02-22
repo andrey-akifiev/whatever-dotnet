@@ -1,11 +1,17 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace WhateverDotNet.TestApp.Excel.Components.EditableTable;
 
 /// <summary>
-/// Interaction logic for EditableTable.xaml
+/// Table of components for editing a collection of complex items.
+/// For "always ready to edit" behaviour you can:
+/// 1) Use a DataGrid with PreviewMouseLeftButtonDown handled by
+///    <see cref="WhateverDotNet.TestApp.Components.Helpers.DataGridEventHelper.DataGridPreviewMouseLeftButtonDownEvent"/>,
+///    which puts the cell into edit mode on first click; or
+/// 2) Use <see cref="WhateverDotNet.TestApp.Excel.Components.TablePanel.TablePanel"/> with a RowTemplate
+///    that contains the actual controls (e.g. SimplifiedTextBox, ComboBox) so each row is always editable.
 /// </summary>
 public partial class EditableTable : UserControl
 {
