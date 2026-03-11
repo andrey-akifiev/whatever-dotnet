@@ -7,7 +7,7 @@ using WhateverDotNet.TestApp.Excel.Models;
 namespace WhateverDotNet.TestApp.Excel.ViewModels;
 
 public class ReportSpecificationColumnsDetailsViewModel
-    : BaseGridViewModel<ReportSpecificationColumnDetailsViewModel, ReportSpecificationColumnModel>
+    : RevertibleCollectionViewModel<ReportSpecificationColumnDetailsViewModel, ReportSpecificationColumnModel>
 {
     public ReportSpecificationColumnsDetailsViewModel()
         : base(new ObservableCollection<ReportSpecificationColumnDetailsViewModel>())
