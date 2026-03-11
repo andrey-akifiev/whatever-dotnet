@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 
+using WhateverDotNet.TestApp.Components.Controls;
 using WhateverDotNet.TestApp.Components.ViewModels;
-using WhateverDotNet.TestApp.Excel.Components.TablePanel;
 using WhateverDotNet.TestApp.Excel.Models;
 
 namespace WhateverDotNet.TestApp.Excel.ViewModels;
@@ -13,13 +13,40 @@ public class ReportSpecificationColumnsDetailsViewModel
         : base(new ObservableCollection<ReportSpecificationColumnDetailsViewModel>())
     {
     }
-    public ObservableCollection<RowVm> Rows { get; } =
-            new ObservableCollection<RowVm>
-            {
-                new() { A = "One", B = "Alpha" },
-                new() { A = "Two", B = "Beta" },
-                new() { A = "Three", B = "Gamma" }
-            };
+
+    public ObservableCollection<TableColumn> Columns { get; } = new ObservableCollection<TableColumn>
+    {
+        new TableColumn
+        {
+            Name = "Name",
+        },
+        new TableColumn
+        {
+            Name = "DisplayName",
+            DisplayName = "Display Name",
+        },
+        new TableColumn
+        {
+            Name = "Type",
+        },
+        new TableColumn
+        {
+            Name = "Format",
+        },
+        new TableColumn
+        {
+            Name = "IsComparable",
+            DisplayName = "Comparable",
+            Width = 80, // TODO: Implement support -- aa
+        },
+        new TableColumn
+        {
+            Name = "IsValuable",
+            DisplayName = "Valuable",
+            Width = 80,
+        },
+    };
+
     public void AddRange(IEnumerable<ReportSpecificationColumnModel> items)
     {
         foreach (var item in items)

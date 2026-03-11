@@ -134,17 +134,32 @@ public class BaseComboBox : ComboBox
         set => SetValue(ContentMarginProperty, value);
     }
 
+    protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+    {
+        base.OnSelectionChanged(e);
+        NotifyCommandCanExecuteChanged();
+    }
+
     private bool CanClearValue() => SelectedItem != null;
 
     private bool CanRevertValue()
     {
         var original = OriginalValue;
         if (original == null)
+        {
             return SelectedItem != null;
+        }
+
         return !Equals(original, SelectedItem);
     }
 
     private void ClearValue() => SelectedItem = null;
 
     private void RevertValue() => SelectedItem = OriginalValue;
+
+    private void NotifyCommandCanExecuteChanged()
+    {
+        (ClearValueCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        (RevertValueCommand as RelayCommand)?.NotifyCanExecuteChanged();
+    }
 }

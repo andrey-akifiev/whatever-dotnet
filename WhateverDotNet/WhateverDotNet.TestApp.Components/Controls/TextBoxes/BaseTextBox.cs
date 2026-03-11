@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +20,7 @@ public class BaseTextBox : TextBox
             nameof(OriginalValue),
             typeof(string),
             typeof(BaseTextBox),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, OnOriginalValueChanged));
 
     public static readonly DependencyProperty PlaceholderValueProperty =
         DependencyProperty.Register(
@@ -134,6 +134,12 @@ public class BaseTextBox : TextBox
         set => SetValue(TextMarginProperty, value);
     }
 
+    protected override void OnTextChanged(TextChangedEventArgs e)
+    {
+        base.OnTextChanged(e);
+        NotifyCommandCanExecuteChanged();
+    }
+
     private bool CanClearValue() => !string.IsNullOrEmpty(Text);
 
     private bool CanRevertValue() => OriginalValue != null && OriginalValue != Text;
@@ -141,4 +147,18 @@ public class BaseTextBox : TextBox
     private void ClearValue() => Text = string.Empty;
 
     private void RevertValue() => Text = OriginalValue;
+
+    private static void OnOriginalValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is BaseTextBox textBox)
+        {
+            textBox.NotifyCommandCanExecuteChanged();
+        }
+    }
+
+    private void NotifyCommandCanExecuteChanged()
+    {
+        (ClearValueCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        (RevertValueCommand as RelayCommand)?.NotifyCanExecuteChanged();
+    }
 }

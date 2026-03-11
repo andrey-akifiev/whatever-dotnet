@@ -23,6 +23,9 @@
     <Compile Update="Controls\Spinner.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Controls\Tables\EditableTable.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Controls\Views\ExcelReportView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WhateverDotNet.TestApp.Excel.Components.ReportSpecificationColumnsDetails"
+<UserControl x:Class="WhateverDotNet.TestApp.Excel.Components.ReportSpecificationColumnsDetails"
              
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,8 +10,6 @@
              xmlns:converters="clr-namespace:WhateverDotNet.TestApp.Components.Converters;assembly=WhateverDotNet.TestApp.Components"
              xmlns:dvms="clr-namespace:WhateverDotNet.TestApp.Excel.DesignData"
              xmlns:local="clr-namespace:WhateverDotNet.TestApp.Excel.Components"
-             xmlns:tp="clr-namespace:WhateverDotNet.TestApp.Excel.Components.TablePanel"
-             xmlns:et="clr-namespace:WhateverDotNet.TestApp.Excel.Components.EditableTable"
              xmlns:models="clr-namespace:WhateverDotNet.TestApp.Excel.Models"
              xmlns:vms="clr-namespace:WhateverDotNet.TestApp.Excel.ViewModels"
              
@@ -38,471 +36,85 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <et:EditableTable/>
-
-    <!--<tp:TablePanel ItemsSource="{Binding Current}">
-        <tp:TablePanel.Columns>
-            <tp:TableColumn Header="Name" WidthType="Star" Width="1" MinWidth="100"/>
-            <tp:TableColumn Header="Display Name" WidthType="Star" Width="1" MinWidth="100"/>
-            <tp:TableColumn Header="Type" WidthType="Star" Width="1" MinWidth="100"/>
-            <tp:TableColumn Header="Format" WidthType="Star" Width="1" MinWidth="100"/>
-            <tp:TableColumn Header="Comparable" WidthType="Star" Width="1" MinWidth="100"/>
-            <tp:TableColumn Header="Valuable" WidthType="Star" Width="1" MinWidth="100"/>
-        </tp:TablePanel.Columns>
-
-        <tp:TablePanel.Header>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{Binding Columns[0].Width,
-                                RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                    <ColumnDefinition Width="{Binding Columns[1].Width,
-                                RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                    <ColumnDefinition Width="{Binding Columns[2].Width,
-                        RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                    <ColumnDefinition Width="{Binding Columns[3].Width,
-                        RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                    <ColumnDefinition Width="{Binding Columns[4].Width,
-                        RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                    <ColumnDefinition Width="{Binding Columns[5].Width,
-                        RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Text="Column A" FontWeight="Bold"/>
-                <TextBlock Grid.Column="1" Text="Column B" FontWeight="Bold"/>
-            </Grid>
-        </tp:TablePanel.Header>
-
-        <tp:TablePanel.RowTemplate>
-            <DataTemplate>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{Binding Columns[0].Width,
-                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                        <ColumnDefinition Width="{Binding Columns[1].Width,
-                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                        <ColumnDefinition Width="{Binding Columns[2].Width,
-                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                        <ColumnDefinition Width="{Binding Columns[3].Width,
-                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                        <ColumnDefinition Width="{Binding Columns[4].Width,
-                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                        <ColumnDefinition Width="{Binding Columns[5].Width,
-                            RelativeSource={RelativeSource AncestorType=tp:TablePanel}}"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox Text="{Binding Name}" Margin="2"/>
-                    <TextBox Grid.Column="1" Text="{Binding DisplayName}" Margin="2"/>
-                    <TextBox Grid.Column="2" Text="{Binding Type}" Margin="2"/>
-                    <TextBox Grid.Column="3" Text="{Binding Format}" Margin="2"/>
-                    <TextBox Grid.Column="4" Text="{Binding IsComparable}" Margin="2"/>
-                    <TextBox Grid.Column="4" Text="{Binding IsValuable}" Margin="2"/>
-                </Grid>
-            </DataTemplate>
-        </tp:TablePanel.RowTemplate>
-    </tp:TablePanel>-->
-    <!--<StackPanel>--><!--
-    <Grid Grid.IsSharedSizeScope="True"
-          HorizontalAlignment="Stretch">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        --><!-- Header --><!--
-        <Grid 
-            Grid.Column="0"
-            Grid.Row="0"
-            HorizontalAlignment="Stretch"
-            ShowGridLines="True">
-            --><!--<Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="100"/>
-            </Grid.ColumnDefinitions>--><!--
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition 
-                    SharedSizeGroup="nameSizeGroup"/>
-                <ColumnDefinition
-                    SharedSizeGroup="displayNameSizeGroup"/>
-                <ColumnDefinition
-                    SharedSizeGroup="typeSizeGroup"/>
-                <ColumnDefinition
-                    SharedSizeGroup="formatSizeGroup"/>
-                <ColumnDefinition
-                    SharedSizeGroup="valuableSizeGroup"/>
-                <ColumnDefinition
-                    SharedSizeGroup="comparableSizeGroup"/>
-                <ColumnDefinition
-                    SharedSizeGroup="actionsSizeGroup"/>
-            </Grid.ColumnDefinitions>
-
-            <controls:SimplifiedTextBlock
-                Grid.Column="0"
-                Text="Name"/>
-            <controls:SimplifiedTextBlock
-                Grid.Column="1"
-                Text="Display Name"/>
-            <controls:SimplifiedTextBlock
-                Grid.Column="2"
-                Text="Type"/>
-            <controls:SimplifiedTextBlock
-                Grid.Column="3"
-                Text="Format"/>
-            <controls:SimplifiedTextBlock
-                Grid.Column="4"
-                Text="Valuable"/>
-            <controls:SimplifiedTextBlock
-                Grid.Column="5"
-                Text="Comparable"/>
-            <controls:SimplifiedTextBlock
-                    Grid.Column="6"
-                    Text="Actions"/>
-        </Grid>
-
-        --><!-- Rows --><!--
-        <ItemsControl
-            Grid.Column="0"
-            Grid.Row="1"
-            HorizontalAlignment="Stretch"
-            HorizontalContentAlignment="Stretch"
-            ItemsSource="{Binding Current}">
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border 
-                        HorizontalAlignment="Stretch"
-                        BorderBrush="Red"
-                        BorderThickness="1">
-                    <Grid HorizontalAlignment="Stretch" ShowGridLines="True">
-                            --><!--<Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="100"/>
-                            </Grid.ColumnDefinitions>--><!--
-                            <Grid.ColumnDefinitions>
-                            <ColumnDefinition 
-                                SharedSizeGroup="nameSizeGroup"
-                                MaxWidth="120"/>
-                            <ColumnDefinition
-                                SharedSizeGroup="displayNameSizeGroup"
-                                />
-                            <ColumnDefinition
-                                SharedSizeGroup="typeSizeGroup"
-                                />
-                            <ColumnDefinition
-                                SharedSizeGroup="formatSizeGroup"
-                                />
-                            <ColumnDefinition
-                                SharedSizeGroup="valuableSizeGroup"
-                                />
-                            <ColumnDefinition
-                                SharedSizeGroup="comparableSizeGroup"
-                                />
-                            <ColumnDefinition
-                                SharedSizeGroup="actionsSizeGroup"
-                                />
-                        </Grid.ColumnDefinitions>
+    <controls:EditableTable
+        Columns="{Binding Columns}"
+        Items="{Binding Current}">
+        <controls:EditableTable.ColumnTemplates>
+            <!-- Name column -->
+            <controls:TableColumnTemplate ColumnName="Name">
+                <controls:TableColumnTemplate.CellTemplate>
+                    <DataTemplate DataType="{x:Type vms:ReportSpecificationColumnDetailsViewModel}">
                         <controls:SimplifiedTextBox
-                            Grid.Column="0"
                             FontSize="{DynamicResource FontSize_Small}"
                             OriginalValue="{Binding NameOriginal}"
                             PlaceholderValue="Name"
                             Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </DataTemplate>
+                </controls:TableColumnTemplate.CellTemplate>
+            </controls:TableColumnTemplate>
+
+            <!-- DisplayName column -->
+            <controls:TableColumnTemplate ColumnName="DisplayName">
+                <controls:TableColumnTemplate.CellTemplate>
+                    <DataTemplate DataType="{x:Type vms:ReportSpecificationColumnDetailsViewModel}">
                         <controls:SimplifiedTextBox
-                            Grid.Column="1"
                             FontSize="{DynamicResource FontSize_Small}"
                             OriginalValue="{Binding DisplayNameOriginal}"
                             PlaceholderValue="Display Name"
-                            Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </DataTemplate>
+                </controls:TableColumnTemplate.CellTemplate>
+            </controls:TableColumnTemplate>
+
+            <!-- Format column -->
+            <controls:TableColumnTemplate ColumnName="Format">
+                <controls:TableColumnTemplate.CellTemplate>
+                    <DataTemplate DataType="{x:Type vms:ReportSpecificationColumnDetailsViewModel}">
                         <controls:SimplifiedTextBox
-                            Grid.Column="2"
                             FontSize="{DynamicResource FontSize_Small}"
-                            OriginalValue="{Binding DisplayNameOriginal}"
-                            PlaceholderValue="Type"
-                            Text="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <controls:SimplifiedTextBox
-                            Grid.Column="3"
-                            FontSize="{DynamicResource FontSize_Small}"
-                            OriginalValue="{Binding DisplayNameOriginal}"
+                            OriginalValue="{Binding FormatOriginal}"
                             PlaceholderValue="Format"
-                            Text="{Binding Format, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <controls:SimplifiedTextBox
-                            Grid.Column="4"
+                            Text="{Binding Format, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </DataTemplate>
+                </controls:TableColumnTemplate.CellTemplate>
+            </controls:TableColumnTemplate>
+
+            <!-- Type column -->
+            <controls:TableColumnTemplate ColumnName="Type">
+                <controls:TableColumnTemplate.CellTemplate>
+                    <DataTemplate DataType="{x:Type vms:ReportSpecificationColumnDetailsViewModel}">
+                        <controls:SimplifiedComboBox
                             FontSize="{DynamicResource FontSize_Small}"
-                            OriginalValue="{Binding DisplayNameOriginal}"
-                            PlaceholderValue="Name"
-                            Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <controls:SimplifiedTextBox
-                            Grid.Column="5"
-                            FontSize="{DynamicResource FontSize_Small}"
-                            OriginalValue="{Binding DisplayNameOriginal}"
-                            PlaceholderValue="Name"
-                            Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <StackPanel 
-                            Grid.Column="6"
-                            Orientation="Horizontal">
-                            <controls:CopyIconButton
-                                Command="{Binding CloneCommand}"
-                                Margin="2 0 2 0"
-                                Size="14"/>
-                            <controls:UndoIconButton
-                                Command="{Binding RevertCommand}"
-                                Margin="2 0 2 0"
-                                Size="14"/>
-                            <controls:TrashIconButton
-                                Command="{Binding RemoveCommand}"
-                                Margin="2 0 2 0"
-                                Size="14"/>
-                        </StackPanel>
-                    </Grid>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </Grid>-->
-    <!--<DockPanel
-            Background="{DynamicResource BackgroundRegularBrush}">
-        -->
-    <!-- Common Table Controls -->
-    <!--
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+                            ItemsSource="{Binding Source={StaticResource ColumnTypes}}"
+                            ShowRevert="True"
+                            SelectedItem="{Binding Type, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                    </DataTemplate>
+                </controls:TableColumnTemplate.CellTemplate>
+            </controls:TableColumnTemplate>
 
-            <TextBlock
-                Grid.Column="0"
-                
-                FontSize="{DynamicResource RegularFontSize}"
-                FontFamily="{DynamicResource RegularFontFamily}"
-                Foreground="{DynamicResource ForegroundRegularBrush}"
-                Margin="8"
-                Text="Columns"/>
+            <!-- Comparable column -->
+            <controls:TableColumnTemplate ColumnName="IsComparable">
+                <controls:TableColumnTemplate.CellTemplate>
+                    <DataTemplate DataType="{x:Type vms:ReportSpecificationColumnDetailsViewModel}">
+                        <CheckBox
+                            IsChecked="{Binding IsComparable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                    </DataTemplate>
+                </controls:TableColumnTemplate.CellTemplate>
+            </controls:TableColumnTemplate>
 
-            <controls:AddIconButton
-                Grid.Column="1"
-
-                Content="Add Column"
-                Command="{Binding AddCommand}"
-                Margin="0 0 8 0"
-                Size="14"/>
-        </Grid>
-
-        <DataGrid
-            DockPanel.Dock="Bottom"
-            ItemsSource="{Binding Current}"
-            PreviewMouseLeftButtonDown="DataGrid_PreviewMouseLeftButtonDown">
-
-            <DataGrid.Resources>
-                <DataTemplate x:Key="TypeDisplayTemplate">
-                    <Grid>
-                        <TextBlock
-                            Style="{StaticResource EditableDataGrid_TextBlock_Style}"
-                            Text="{Binding Type}"/>
-
-                        <Border Grid.Column="1"
-                            Grid.Row="0"
-                        
-                            Height="16"
-                            Width="16"
-                            Margin="0 0 6 0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center">
-                            <Path
-                            Data="M0 0 16 16 0 0 8 11.207l-4-4V5.793l4 4 4-4v1.414 L8 11.207"
-                            Fill="{StaticResource ForegroundRegularBrush}"
-
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-
-                            Stretch="Uniform"/>
-                        </Border>
-                    </Grid>
-                </DataTemplate>
-
-                <DataTemplate x:Key="TypeEditingTemplate">
-                    <ComboBox 
-                        IsDropDownOpen="True" 
-
-                        ItemsSource="{Binding Source={StaticResource ColumnTypes}}"
-                    
-                        Style="{StaticResource EditableDataGrid_ComboBoxCell_EditingElementStyle}"
-                        Text="{Binding Type,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                </DataTemplate>
-
-                <Style x:Key="TextBoxDataGridStyle" TargetType="{x:Type TextBlock}">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="FontFamily" Value="{DynamicResource RegularFontFamily}"/>
-                    <Setter Property="FontSize" Value="{DynamicResource RegularFontSize}"/>
-                </Style>
-
-                <Style TargetType="{x:Type DataGridColumnHeader}">
-                    <Setter Property="FontFamily" Value="{DynamicResource RegularFontFamily}"/>
-                    <Setter Property="FontSize" Value="{DynamicResource RegularFontSize}"/>
-                    <Setter Property="FontStyle" Value="Normal"/>
-                    <Setter Property="FontWeight" Value="Normal"/>
-
-                    <Setter Property="VerticalContentAlignment" Value="Center"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
-                                <Grid>
-                                    <Border 
-                                    BorderThickness="1"
-                                    Padding="3 0 3 0">
-                                        <ContentPresenter 
-                                        HorizontalAlignment="Center"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                    </Border>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <Style TargetType="{x:Type DataGridColumnHeadersPresenter}">
-                    <Setter Property="Margin" Value="0 4 0 4"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type DataGridColumnHeadersPresenter}">
-                                <Grid>
-                                    <DataGridColumnHeader IsHitTestVisible="False" />
-                                    <ItemsPresenter />
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-                <Style TargetType="{x:Type DataGrid}">
-                    <Setter Property="AutoGenerateColumns" Value="False"/>
-
-                    <Setter Property="Background" Value="{DynamicResource BackgroundRegularBrush}"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource BorderRegularBrush}"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-
-                    <Setter Property="CanUserAddRows" Value="False"/>
-                    <Setter Property="CanUserDeleteRows" Value="False"/>
-                    <Setter Property="CanUserReorderColumns" Value="False"/>
-                    <Setter Property="CanUserResizeColumns" Value="False"/>
-                    <Setter Property="CanUserResizeRows" Value="False"/>
-                    <Setter Property="CanUserSortColumns" Value="False"/>
-
-                    <Setter Property="Focusable" Value="False"/>
-
-                    <Setter Property="GridLinesVisibility" Value="None"/>
-
-                    <Setter Property="HeadersVisibility" Value="Column"/>
-                    <Setter Property="IsReadOnly" Value="False"/>
-
-                    <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
-                    <Setter Property="ScrollViewer.PanningMode" Value="None"/>
-                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
-
-                    <Setter Property="SelectionMode" Value="Single"/>
-                    <Setter Property="SelectionUnit" Value="Cell"/>
-
-
-                </Style>
-            </DataGrid.Resources>
-
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="Background" Value="Transparent"/>
-
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="Transparent"/>
-                        </Trigger>
-
-                        <Trigger Property="IsEditing" Value="True">
-                            <Setter Property="Background" Value="Transparent"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
-
-            <DataGrid.Columns>
-                <DataGridTemplateColumn
-                    Header="Name"
-                    Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate DataType="{x:Type vms:ReportSpecificationColumnDetailsViewModel}">
-                            <controls:SimplifiedTextBlock
-                                FontSize="{DynamicResource FontSize_Small}"
-                                Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    <DataGridTemplateColumn.CellEditingTemplate>
-                        <DataTemplate DataType="{x:Type vms:ReportSpecificationColumnDetailsViewModel}">
-                            <controls:SimplifiedTextBox
-                                FontSize="{DynamicResource FontSize_Small}"
-                                OriginalValue="{Binding NameOriginal}"
-                                PlaceholderValue="Name"
-                                Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellEditingTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn
-                    Header="Display Name"
-                    Binding="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Width="*"
-                    EditingElementStyle="{StaticResource EditableDataGrid_TextBox_Style}"
-                    ElementStyle="{StaticResource EditableDataGrid_TextBlock_Style}"/>
-
-                <DataGridTemplateColumn
-                    Header="Type"
-                    Width="*"
-                    CellTemplate="{StaticResource TypeDisplayTemplate}"
-                    CellEditingTemplate="{StaticResource TypeEditingTemplate}"/>
-
-                <DataGridCheckBoxColumn
-                    Header="Valuable"
-                    Width="*"/>
-                <DataGridCheckBoxColumn
-                    Header="Comparable"
-                    Width="*"/>
-                <DataGridTemplateColumn
-                    Header=""
-                    Width="Auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <controls:CopyIconButton
-                                    Command="{Binding CloneCommand}"
-                                    Margin="2 0 2 0"
-                                    Size="14"/>
-                                <controls:UndoIconButton
-                                    Command="{Binding RevertCommand}"
-                                    Margin="2 0 2 0"
-                                    Size="14"/>
-                                <controls:TrashIconButton
-                                    Command="{Binding RemoveCommand}"
-                                    Margin="2 0 2 0"
-                                    Size="14"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </DockPanel>
-    </StackPanel>-->
+            <!-- Valuable column -->
+            <controls:TableColumnTemplate ColumnName="IsValuable">
+                <controls:TableColumnTemplate.CellTemplate>
+                    <DataTemplate DataType="{x:Type vms:ReportSpecificationColumnDetailsViewModel}">
+                        <CheckBox
+                            IsChecked="{Binding IsValuable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                    </DataTemplate>
+                </controls:TableColumnTemplate.CellTemplate>
+            </controls:TableColumnTemplate>
+        </controls:EditableTable.ColumnTemplates>
+    </controls:EditableTable>
 </UserControl>

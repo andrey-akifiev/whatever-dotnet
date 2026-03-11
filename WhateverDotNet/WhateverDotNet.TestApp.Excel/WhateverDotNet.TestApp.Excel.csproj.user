@@ -2,9 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="Components\EditableTable\EditableTable.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Components\ReportSpecificationColumnsDetails.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -18,9 +15,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Components\ReportSpecificationWorksheetDetails.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="Components\TablePanel\TablePanel.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ReportSpecificationsView.xaml.cs">
