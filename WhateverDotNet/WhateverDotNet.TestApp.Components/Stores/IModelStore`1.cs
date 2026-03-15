@@ -3,7 +3,7 @@
 public interface IModelStore<TModel>
     where TModel : class, IModel
 {
-    IReadOnlyList<TModel> Items { get; }
+    public IReadOnlyList<TModel> Items { get; }
 
     TModel? Get(Guid id);
 

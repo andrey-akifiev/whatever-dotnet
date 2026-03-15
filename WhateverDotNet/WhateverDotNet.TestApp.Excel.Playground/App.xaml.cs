@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Configuration;
-using System.Data;
+
 using System.Windows;
-using System.Windows.Controls;
-using WhateverDotNet.TestApp.Components.Helpers;
+
+using WhateverDotNet.TestApp.Components.Navigation;
+using WhateverDotNet.TestApp.Components.Pages;
 using WhateverDotNet.TestApp.Excel.Commands;
-using WhateverDotNet.TestApp.Excel.Playground.ViewModels;
-using WhateverDotNet.TestApp.Excel.Stores;
+using WhateverDotNet.TestApp.Excel.Pages.ReportSpecifications;
 using WhateverDotNet.TestApp.Excel.ViewModels;
+using WhateverDotNet.TestApp.Excel.Views;
 
 namespace WhateverDotNet.TestApp.Excel.Playground
 {
@@ -28,13 +28,21 @@ namespace WhateverDotNet.TestApp.Excel.Playground
                     services.AddSingleton<IRemoveReportSpecificationCommand, RemoveReportSpecificationCommand>();
                     services.AddSingleton<IUpdateReportSpecificationCommand, UpdateReportSpecificationCommand>();
 
-                    services.AddSingleton<ReportSpecificationsStore>();
-                    services.AddSingleton<SelectedReportSpecificationStore>();
-                    services.AddSingleton<ReportSpecificationsStore_New>();
+                    services.AddSingleton<WhateverDotNet.TestApp.Excel.Stores.NavigationStore>();
+                    
+                    services.AddSingleton<Stores.ReportSpecificationsStore_New>();
 
+                    services.AddTransient<ReportSpecificationsView>();
+                    services.AddTransient<ReportSpecificationsViewModel>(CreateReportSpecificationsViewModel);
+                    services.AddTransient<IPageViewModel, ReportSpecificationsViewModel>(CreateReportSpecificationsViewModel);
 
                     services.AddSingleton<MainViewModel>();
-                    services.AddTransient<ReportSpecificationsViewModel>(CreateReportSpecificationsViewModel);
+
+                    // Hamburger navigation: register page view models so they are discovered by NavigationStore
+
+                    services.AddSingleton<INavigationStore, NavigationStore>();
+                    services.AddSingleton<NavigationMenuViewModel>();
+                    services.AddSingleton<HamburgerShellViewModel>();
 
                     services.AddSingleton<MainWindow>((services) => new MainWindow
                     {
@@ -65,7 +73,7 @@ namespace WhateverDotNet.TestApp.Excel.Playground
         private ReportSpecificationsViewModel CreateReportSpecificationsViewModel(IServiceProvider services)
         {
             return ReportSpecificationsViewModel.LoadViewModel(
-                services.GetRequiredService<ReportSpecificationsStore_New>());
+                services.GetRequiredService<Stores.ReportSpecificationsStore_New>());
         }
     }
 }

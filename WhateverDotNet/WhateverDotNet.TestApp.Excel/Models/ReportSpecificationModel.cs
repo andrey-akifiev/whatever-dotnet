@@ -1,13 +1,15 @@
-﻿using WhateverDotNet.TestApp.Components.Models;
+﻿using WhateverDotNet.TestApp.Components.Controls;
+using WhateverDotNet.TestApp.Components.Models;
 using WhateverDotNet.TestApp.Components.Stores;
 
 namespace WhateverDotNet.TestApp.Excel.Models;
 
 public class ReportSpecificationModel
     : ICloneable,
-        IEquatable<ReportSpecificationModel>,
-        IModel,
-        ISampleProvider<ReportSpecificationModel>
+      IEnlistableModel,
+      IEquatable<ReportSpecificationModel>,
+      IModel,
+      ISampleProvider<ReportSpecificationModel>
 {
     public ReportSpecificationModel()
     {
@@ -16,11 +18,13 @@ public class ReportSpecificationModel
 
     public string? Description { get; set; }
 
+    public Guid Id { get; set; }
+
     public string? Name { get; set; }
 
-    public Guid Id { get; set; }
- 
     public string? SelectedWorksheetName { get; set; }
+
+    public string Title => Name ?? string.Empty;
 
     public ReportSpecificationWorksheetModel[]? Worksheets { get; set; }
 

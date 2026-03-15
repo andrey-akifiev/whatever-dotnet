@@ -1,43 +1,61 @@
-﻿namespace WhateverDotNet.TestApp.Components.Stores;
+﻿using System.Collections.ObjectModel;
+
+using WhateverDotNet.TestApp.Components.Controls;
+
+namespace WhateverDotNet.TestApp.Components.Stores;
 
 public abstract class BaseModelStore<TModel>
-    : IModelStore<TModel>, IModelStoreEvents<TModel>
-        where TModel : class, IModel
+    : IEnlistableItemsStore<TModel>,
+      IModelStore<TModel>,
+      IModelStoreEvents<TModel>
+        where TModel : class, ICloneable, IEnlistableModel, IModel
 {
-    protected readonly List<TModel> _items = new();
-
     public event Action<TModel>? Added;
     public event Action<IEnumerable<TModel>>? Loaded;
+    public event Action? SelectedItemChanged;
     public event Action<TModel>? Updated;
     public event Action<TModel>? Removed;
 
-    public IReadOnlyList<TModel> Items => _items;
+    protected BaseModelStore()
+    {
+        Items = new ObservableCollection<TModel>();
+    }
+
+    IReadOnlyList<TModel> IModelStore<TModel>.Items => Items;
+
+    public ObservableCollection<TModel> Items { get; }
+
+    public TModel? SelectedItem { get; private set; }
 
     public virtual void Add(TModel entity)
     {
-        if (_items.Any(i => i.Id  == entity.Id))
-        {
-            throw new InvalidOperationException("Entity already exists");
-        }
-
-        _items.Add(entity);
+        Items.Add(entity);
         OnAdded(entity);
     }
 
     public TModel? Get(Guid id)
     {
-        return _items.FirstOrDefault(x => x.Id == id);
+        return Items.FirstOrDefault(x => x.Id == id);
     }
 
     public async Task LoadAsync(CancellationToken cancellationToken = default)
     {
-        _items.Clear();
+        Items.Clear();
 
         IEnumerable<TModel> items = await LoadAsyncImpl(cancellationToken);
 
-        _items.AddRange(items);
+        foreach (var item in items)
+        {
+            Items.Add(item);
+        }
 
         OnLoaded(items);
+    }
+
+    public virtual void Remove(TModel model)
+    {
+        Items.Remove(model);
+        OnRemoved(model);
     }
 
     public virtual void Remove(Guid id)
@@ -49,25 +67,39 @@ public abstract class BaseModelStore<TModel>
             return;
         }
 
-        _items.Remove(entity);
-        OnRemoved(entity);
+        Remove(entity);
     }
 
     public async Task SaveAsync(CancellationToken cancellationToken = default)
     {
-        await SaveAsyncImpl(_items, cancellationToken);
+        await SaveAsyncImpl(Items, cancellationToken);
+    }
+
+    public void SelectItem(TModel? item)
+    {
+        SelectedItem = item;
+        SelectedItemChanged?.Invoke();
+    }
+
+    public void SelectItem(Guid id)
+    {
+        SelectedItem = Get(id);
+        SelectedItemChanged?.Invoke();
     }
 
     public virtual void Update(TModel entity)
     {
-        var index = _items.FindIndex(x => x.Id == entity.Id);
+        TModel? existingItem = Items.FirstOrDefault(x => x.Id == entity.Id);
 
-        if (index < 0)
+        if (existingItem is null)
         {
             throw new InvalidOperationException("Entity not found");
         }
 
-        _items[index] = entity;
+        int index = Items.IndexOf(existingItem);
+        Items.RemoveAt(index);
+        Items.Insert(index, entity);
+
         OnUpdated(entity);
     }
 

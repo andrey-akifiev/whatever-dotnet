@@ -4,8 +4,8 @@ namespace WhateverDotNet.TestApp.Components.ViewModels;
 
 public abstract class BaseListingDetailsViewModel<TModel, TListingItemViewModel, TDetailsViewModel> 
     : BaseViewModel
-        where TModel : class, IModel
-        where TListingItemViewModel : class, IListingItemViewModel<TModel>
+        where TModel : class, ICloneable, IModel
+        where TListingItemViewModel : class, IItemViewModel<TModel>
         where TDetailsViewModel: class
 {
     protected readonly IModelStore<TModel> _store;

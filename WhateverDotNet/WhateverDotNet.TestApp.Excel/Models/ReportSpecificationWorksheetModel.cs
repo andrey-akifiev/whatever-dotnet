@@ -4,8 +4,8 @@ namespace WhateverDotNet.TestApp.Excel.Models;
 
 public class ReportSpecificationWorksheetModel
     : ICloneable,
-        IEquatable<ReportSpecificationWorksheetModel>,
-        ISampleProvider<ReportSpecificationWorksheetModel>
+      IEquatable<ReportSpecificationWorksheetModel>,
+      ISampleProvider<ReportSpecificationWorksheetModel>
 {
     public string? Name { get; set; }
 

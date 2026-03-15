@@ -6,8 +6,8 @@ namespace WhateverDotNet.TestApp.Components.ViewModels;
 
 public class BaseListingViewModel<TListingItemViewModel, TModel>
     : BaseViewModel
-        where TListingItemViewModel: class, IListingItemViewModel<TModel>
-        where TModel : class, IModel
+        where TListingItemViewModel: class, IItemViewModel<TModel>
+        where TModel : class, IModel, ICloneable
 {
     private TListingItemViewModel? _selectedItem;
 

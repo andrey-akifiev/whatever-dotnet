@@ -41,7 +41,7 @@
         Items="{Binding Current}">
         <controls:EditableTable.ColumnTemplates>
             <!-- Name column -->
-            <controls:TableColumnTemplate ColumnName="Name">
+            <controls:TableColumnTemplate ColumnName="Title">
                 <controls:TableColumnTemplate.CellTemplate>
                     <DataTemplate DataType="{x:Type vms:ReportSpecificationColumnDetailsViewModel}">
                         <controls:SimplifiedTextBox

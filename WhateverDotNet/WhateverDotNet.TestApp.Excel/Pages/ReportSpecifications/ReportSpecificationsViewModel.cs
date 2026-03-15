@@ -1,13 +1,15 @@
 ﻿using System.Windows.Input;
 
-using WhateverDotNet.TestApp.Components.ViewModels;
+using WhateverDotNet.TestApp.Components.Pages;
 using WhateverDotNet.TestApp.Excel.Models;
 using WhateverDotNet.TestApp.Excel.Stores;
+using WhateverDotNet.TestApp.Excel.ViewModels;
 
-namespace WhateverDotNet.TestApp.Excel.ViewModels;
+namespace WhateverDotNet.TestApp.Excel.Pages.ReportSpecifications;
 
 public class ReportSpecificationsViewModel
-    : BaseListingDetailsViewModel<
+    : BaseListingPageViewModel<
+        ReportSpecificationsPageModel,
         ReportSpecificationModel,
         ReportSpecificationsListingItemViewModel_New,
         ReportSpecificationsDetailsViewModel>
@@ -16,7 +18,7 @@ public class ReportSpecificationsViewModel
     private bool _isLoading;
 
     public ReportSpecificationsViewModel(ReportSpecificationsStore_New store)
-        : base(store)
+        : base(store, new ReportSpecificationsPageModel())
     {
     }
 

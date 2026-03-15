@@ -1,0 +1,236 @@
+<UserControl x:Class="WhateverDotNet.TestApp.Components.Controls.HamburgerMenu"
+             
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:converters="clr-namespace:WhateverDotNet.TestApp.Components.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:WhateverDotNet.TestApp.Components.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="280">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/WhateverDotNet.TestApp.Components;component/Assets/Styles/Basics.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+            <!-- Menu item template: Icon (always) + Title (when expanded) + Triangle (when selected) -->
+            <DataTemplate
+                x:Key="HamburgerMenuItemTemplate">
+
+                <Button Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding DataContext.SelectItemCommand,
+                                          RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        CommandParameter="{Binding}"
+                        Cursor="Hand"
+                        Foreground="{Binding Foreground,
+                                             Mode=OneWay,
+                                             RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                        HorizontalContentAlignment="Stretch"
+                        Padding="12 10 0 10">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Icon: visible in both collapsed and expanded -->
+                                    <Path x:Name="IconPath"
+                                          Grid.Column="0"
+                                          Width="24"
+                                          Height="24"
+                                          Data="{Binding Icon}"
+                                          Fill="{TemplateBinding Foreground}"
+                                          Stretch="Uniform"
+                                          VerticalAlignment="Center"/>
+
+                                    <!-- Title: visible only when expanded -->
+                                    <TextBlock x:Name="TitleText"
+                                               Grid.Column="1"
+                                               
+                                               FontFamily="{DynamicResource FontFamily_Regular}"
+                                               FontSize="{DynamicResource FontSize_Regular}"
+                                               Foreground="{TemplateBinding Foreground}"
+                                               
+                                               Margin="12,0,0,0"
+                                               VerticalAlignment="Center"
+                                           
+                                               Text="{Binding Title}"
+                                               TextTrimming="CharacterEllipsis"/>
+
+                                    <!-- Selected indicator: small triangle to the right -->
+                                    <Path x:Name="SelectedArrow"
+                                            Grid.Column="2"
+                                            Width="8"
+                                            Height="8"
+                                            Margin="0,0,5,0"
+                                            Data="M0,0 L8,4 L0,8 Z"
+                                            Fill="{TemplateBinding Foreground}"
+                                            Stretch="Uniform"
+                                            VerticalAlignment="Center">
+                                        <Path.Visibility>
+                                            <Binding Path="IsSelected">
+                                                <Binding.Converter>
+                                                    <converters:BooleanToVisibilityConverter/>
+                                                </Binding.Converter>
+                                            </Binding>
+                                        </Path.Visibility>
+                                    </Path>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="{DynamicResource ContrastBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid
+        x:Name="LayoutRoot"
+        Background="{Binding Background,
+                             Mode=OneWay,
+                             RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Logo at top (set LogoContent on the control to show custom logo) -->
+        <Border Grid.Row="0"
+            
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                Margin="15 0 15 0"
+                MinHeight="80">
+            <Grid>
+                <Path x:Name="expandedLogoPath"
+      
+                      Data="{Binding ExpandedLogo}"
+                      Fill="{Binding Foreground,
+                                     Mode=OneWay,
+                                     RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                      Stretch="Uniform"
+                      VerticalAlignment="Center">
+                    <Path.Style>
+                        <Style TargetType="{x:Type Path}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsExpanded}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                </Path>
+                <Path x:Name="collapsedLogoPath"
+      
+                      Data="{Binding CollapsedLogo}"
+                      Fill="{Binding Foreground,
+                                     Mode=OneWay,
+                                     RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                      Stretch="Uniform"
+                      VerticalAlignment="Center">
+                    <Path.Style>
+                        <Style TargetType="{x:Type Path}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsExpanded}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                </Path>
+            </Grid>
+        </Border>
+        
+        <!-- Navigation menu (top, below logo) -->
+        <ListBox 
+            Grid.Row="1"
+            
+            BorderThickness="0"
+            Background="Transparent"
+            
+            ItemTemplate="{StaticResource HamburgerMenuItemTemplate}"
+            ItemsSource="{Binding TopMenuItems}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            SelectedItem="{Binding SelectedNavigationItem, Mode=TwoWay}"
+            SelectionMode="Single">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <ContentPresenter/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <!-- Support menu (bottom: Settings, Help, etc.) -->
+        <ListBox
+            Grid.Row="2"
+            
+            BorderThickness="0"
+            Background="Transparent"
+            
+            ItemTemplate="{StaticResource HamburgerMenuItemTemplate}"
+            ItemsSource="{Binding BottomMenuItems}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            SelectedItem="{Binding SelectedSupportItem, Mode=TwoWay}"
+            SelectionMode="Single">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{Binding Foreground,
+                            Mode=OneWay,
+                            RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <ContentPresenter/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <!-- Toggle expand/collapse at the very bottom -->
+        <local:ExpandCollapseToggleButton
+            Grid.Row="3"
+            Background="{Binding Background,
+                                 Mode=OneWay,
+                                 RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+            Foreground="{Binding Foreground,
+                                 Mode=OneWay,
+                                 RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+            IsChecked="{Binding IsExpanded, Mode=TwoWay}"
+            Margin="0,0,0,8"/>
+    </Grid>
+</UserControl>

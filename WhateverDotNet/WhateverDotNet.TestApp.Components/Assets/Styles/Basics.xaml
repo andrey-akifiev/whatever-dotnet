@@ -92,7 +92,7 @@
     <FontFamily x:Key="RegularFontFamily">Rubik</FontFamily>
 
     <sys:Double x:Key="HeaderFontSize">16</sys:Double>
-    <sys:Double x:Key="PageNameFontSize">20</sys:Double>
+    <sys:Double x:Key="PageNameFontSize">28</sys:Double>
     <sys:Double x:Key="RegularFontSize">14</sys:Double>
     <sys:Double x:Key="SmallFontSize">12</sys:Double>
     <sys:Double x:Key="SmallerFontSize">10</sys:Double>

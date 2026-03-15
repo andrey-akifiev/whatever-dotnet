@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="marsh-splash.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.2" />
   </ItemGroup>
@@ -16,6 +20,14 @@
   <ItemGroup>
     <ProjectReference Include="..\WhateverDotNet.TestApp.Components\WhateverDotNet.TestApp.Components.csproj" />
     <ProjectReference Include="..\WhateverDotNet.TestApp.Excel\WhateverDotNet.TestApp.Excel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SplashScreen Include="marsh-splash.png" />
   </ItemGroup>
 
 </Project>

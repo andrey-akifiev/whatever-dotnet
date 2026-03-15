@@ -4,8 +4,8 @@ namespace WhateverDotNet.TestApp.Excel.Models;
 
 public class ReportSpecificationColumnModel
     : ICloneable, 
-        IEquatable<ReportSpecificationColumnModel>,
-        ISampleProvider<ReportSpecificationColumnModel>
+      IEquatable<ReportSpecificationColumnModel>,
+      ISampleProvider<ReportSpecificationColumnModel>
 {
     private string? _displayName;
 

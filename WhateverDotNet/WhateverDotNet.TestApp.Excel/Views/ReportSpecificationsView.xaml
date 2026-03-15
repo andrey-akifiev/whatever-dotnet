@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WhateverDotNet.TestApp.Excel.Views.ReportSpecificationsView"
+<UserControl x:Class="WhateverDotNet.TestApp.Excel.Views.ReportSpecificationsView"
              x:Name="root"
              
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -12,7 +12,6 @@
              
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,121 +19,51 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
-    <Grid>
-        <StackPanel VerticalAlignment="Center">
-            <StackPanel.Style>
-                <Style TargetType="StackPanel">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Style>
 
-            <TextBlock HorizontalAlignment="Center"
-                       FontSize="16"
-                       FontWeight="Bold"
-                       Text="Loading report specifications..."/>
-        </StackPanel>
-
-        <Grid>
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsLoading}" Value="False">
-                            <Setter Property="Visibility" Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
-
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding HasErrorMessage}" Value="True">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-
+    <Grid Margin="0,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Page Title -->
+        <Border Grid.Row="0"
+                BorderBrush="{DynamicResource BackgroundContrastBrush}"
+                BorderThickness="0 0 0 2">
+            <StackPanel
+                    Orientation="Horizontal">
+                <Path Data="{Binding Icon}"
+                      Fill="{DynamicResource BackgroundContrastBrush}"
+                      Height="24"
+                      Margin="20 10 0 0"
+                      Width="24"/>
                 <TextBlock
-                    VerticalAlignment="Center"
-                    
-                    Text="{Binding ErrorMessage}"
-                    TextAlignment="Center" />
-            </Grid>
-
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Visible" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding HasErrorMessage}" Value="False">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="1" Margin="0,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="2*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <Grid 
-                        Grid.Column="0"
-                        Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock
-                            Grid.Column="0"
+                    FontFamily="{DynamicResource RegularFontFamily}"
+                    FontSize="{DynamicResource PageNameFontSize}"
     
-                            FontFamily="{DynamicResource RegularFontFamily}"
-                            FontSize="{DynamicResource PageNameFontSize}"
-    
-                            Text="Report Specifications"/>
+                    Margin="10, 20, 0, 10"
+                    Text="Report Specifications"/>
+            </StackPanel>
+        </Border>
+        <!-- Page Content -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding Listing.MenuWidth}"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-
-                        <controls:AddIconButton
-                            Grid.Column="1"
-                            Size="16"/>
-                    </Grid>
-
-                    <components:ReportSpecificationsListing 
-                        Grid.Column="0"
-                        Grid.Row="1"
+            <controls:ListingPanel
+                Grid.Column="0"
                         
-                        DataContext="{Binding Listing}" />
-                    <components:ReportSpecificationDetails 
-                        Grid.Column="1"
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
+                DataContext="{Binding Listing}"/>
+            <components:ReportSpecificationDetails 
+                Grid.Column="1"
+                Grid.Row="0"
+                Grid.RowSpan="2"
                         
-                        Margin="10 0 5 0"
+                Margin="20 15 5 0"
                         
-                        DataContext="{Binding Details}" />
-                </Grid>
-            </Grid>
+                DataContext="{Binding Details}" />
         </Grid>
     </Grid>
 </UserControl>

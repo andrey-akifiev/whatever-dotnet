@@ -12,6 +12,7 @@
     <commands:CopyToClipboardCommand x:Key="CopyToClipboardCommand"/>
 
     <converters:ClipboardFormatConverter x:Key="ClipboardFormatConverter"/>
+    <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
     <converters:IsNullToBooleanConverter x:Key="IsNullToBooleanConverter"/>
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
 
@@ -178,6 +179,87 @@
         <Setter Property="IconPosition" Value="Left"/>
         <!-- Sign-in / login icon: person with arrow (log in) -->
         <Setter Property="IconData" Value="M12,12a4,4,0,1,0-4-4A4,4,0,0,0,12,12Zm6,2a1,1,0,0,0-1-1H7a3,3,0,0,0-3,3v6a1,1,0,0,0,2,0V16h3v3a1,1,0,0,0,2,0V16h2v4a1,1,0,0,0,2,0V14h2A1,1,0,0,0,18,14Zm-4-6h4.586L15,11.586,16.414,13,21,8.414V13a1,1,0,0,0,2,0V7a1,1,0,0,0-1-1H14a1,1,0,0,0,0,2Z"/>
+    </Style>
+
+    <!-- Expand/collapse toggle (HamburgerMenu, ListingPanel) -->
+    <Style TargetType="{x:Type controls:ExpandCollapseToggleButton}">
+        <Setter Property="Background" Value="{DynamicResource BackgroundContrastBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundWhiteBrush}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ExpandCollapseToggleButton}">
+                    <Border x:Name="tglBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Height="44">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                            </Grid.ColumnDefinitions>
+                            <Rectangle Grid.Column="0" Fill="Transparent"/>
+                            <TextBlock x:Name="tglLblCollapse"
+                                       Grid.Column="1"
+                                       FontFamily="{DynamicResource FontFamily_Regular}"
+                                       FontSize="{DynamicResource FontSize_Regular}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       Margin="5,0,0,0"
+                                       Text="Collapse"
+                                       Visibility="Visible"
+                                       VerticalAlignment="Center"/>
+                            <Path x:Name="ToggleIcon"
+                                  Grid.Column="2"
+                                  Data="M.614.891a.047.047 0 0 1-.033-.08L.797.596a.047.047 0 0 0 0-.067L.581.314a.047.047 0 0 1 0-.067.047.047 0 0 1 .066 0l.215.215a.14.14 0 0 1 0 .199L.647.876A.05.05 0 0 1 .614.89M.286.891a.047.047 0 0 1-.033-.08L.501.563.253.315a.047.047 0 0 1 0-.067.047.047 0 0 1 .066 0L.6.529a.047.047 0 0 1 0 .067L.319.877a.05.05 0 0 1-.033.014"
+                                  Fill="{TemplateBinding Foreground}"
+                                  Width="14"
+                                  Height="14"
+                                  Stretch="Uniform"
+                                  VerticalAlignment="Center"
+                                  RenderTransformOrigin="0.5,0.5">
+                                <Path.RenderTransform>
+                                    <RotateTransform x:Name="ToggleIconRotate" Angle="180"/>
+                                </Path.RenderTransform>
+                            </Path>
+                            <Rectangle Grid.Column="3" Fill="Transparent"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="tglLblCollapse" Property="Visibility" Value="Collapsed"/>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="ToggleIconRotate"
+                                                         Storyboard.TargetProperty="Angle"
+                                                         From="180" To="0"
+                                                         Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="ToggleIconRotate"
+                                                         Storyboard.TargetProperty="Angle"
+                                                         From="0" To="180"
+                                                         Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="tglBorder" Property="Background" Value="{DynamicResource ContrastBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     
     <!-- LABELS STYLES -->
@@ -1083,7 +1165,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style TargetType="{x:Type controls:ColoredExpanderPanel}">
         <Setter Property="Background" Value="{DynamicResource BackgroundRegularBrush}"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
@@ -1143,7 +1225,7 @@
                                 DockPanel.Dock="Bottom"
                                 Focusable="False"
                                 Margin="1 0 1 1">
-                                
+
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
@@ -1171,7 +1253,7 @@
                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                     Visibility="Collapsed"/>
                             </Grid>
-                            
+
                         </DockPanel>
                     </Border>
 
@@ -1205,6 +1287,386 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="ToggleButton_SidePanel_Style"
+           TargetType="{x:Type ToggleButton}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="IsChecked" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border MinHeight="40">
+                        <Grid SnapsToDevicePixels="False">
+                            <Grid.ColumnDefinitions>
+                                <!-- Text -->
+                                <ColumnDefinition Width="*"/>
+                                <!-- Toggle button -->
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                x:Name="xpndrCaption"
+                                Grid.Column="0"
+                                
+                                FontFamily="{StaticResource FontFamily_Regular}"
+                                FontSize="{StaticResource FontSize_Header}"
+                                FontStyle="Normal"
+                                FontWeight="Regular"
+                                
+                                Foreground="{TemplateBinding Foreground}"
+                                
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Text="Collapse"/>
+                            <Border
+                                Grid.Column="1"
+                
+                                Margin="5 0 0 0"
+                                Height="{StaticResource IconRegularSize}"
+                                Width="{StaticResource IconRegularSize}">
+
+                                <Path x:Name="xpndrTglIcon"
+                                      Data="M0 0 16 16 0 0 8 11.207l-4-4V5.793l4 4 4-4v1.414 L8 11.207"
+                                      Fill="{TemplateBinding Foreground}"
+                          
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                          
+                                      Stretch="Uniform"
+                                      RenderTransformOrigin="0.5,0.5">
+                                    <Path.RenderTransform>
+                                        <RotateTransform
+                                            x:Name="xpndrTglIcon_RotateTransform"
+                                            Angle="270"/>
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked"
+                                 Value="True">
+                            <Setter TargetName="xpndrCaption"
+                                    Property="Visibility"
+                                    Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked"
+                                 Value="False">
+                            <Setter TargetName="xpndrCaption"
+                                    Property="Visibility"
+                                    Value="Collapsed"/>
+                        </Trigger>
+                        <!-- Animations on expand -->
+                        <Trigger Property="IsChecked"
+                                 Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="xpndrTglIcon_RotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            From="270"
+                                            To="90"
+                                            Duration="0:0:0.2">
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="xpndrTglIcon_RotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            From="90"
+                                            To="270"
+                                            Duration="0:0:0.2">
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:CollapsibleListViewItem}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="2 2 2 2"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:CollapsibleListViewItem}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <!-- Icon -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Text -->
+                            <ColumnDefinition Width="*"/>
+                            <!-- Actions -->
+                            <ColumnDefinition Width="Auto"/>
+                            <!-- Selected icon -->
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Icon -->
+                        <Border
+                            x:Name="icon"
+                            Grid.Column="0"
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            
+                            Height="{DynamicResource IconRegularSize}"
+                            Width="{DynamicResource IconRegularSize}"
+                            VerticalAlignment="Center">
+                            <Path
+                                Data="{Binding Icon}"
+                                Fill="{TemplateBinding Foreground}"
+                                Stretch="Uniform"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="Visible"/>
+                            <!--<ContentPresenter Content="{Binding Icon,
+                                                        Mode=OneWay,
+                                                        RelativeSource={RelativeSource AncestorType={x:Type controls:CollapsibleListViewItem}}}"/>-->
+                        </Border>
+
+                        <!-- Text -->
+                        <TextBlock
+                            x:Name="title"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            
+                            Background="{TemplateBinding Background}"
+                            FontFamily="{DynamicResource FontFamily_Regular}"
+                            FontSize="{DynamicResource FontSize_Regular}"
+                            FontStyle="Normal"
+                            FontWeight="Regular"
+                            Foreground="{TemplateBinding Foreground}"
+                            Margin="5 2 2 2"
+                            
+                            Text="{Binding Title}"
+                            TextTrimming="CharacterEllipsis"
+                            VerticalAlignment="Center"
+                            Visibility="Visible"/>
+                        <TextBlock
+                            x:Name="description"
+                            Grid.Column="1"
+                            Grid.Row="1"
     
-    <!-- DATAGRID STYLES? -->
+                            Background="{TemplateBinding Background}"
+                            FontFamily="{DynamicResource FontFamily_Regular}"
+                            FontSize="{DynamicResource FontSize_Small}"
+                            FontStyle="Normal"
+                            FontWeight="Regular"
+                            Foreground="{TemplateBinding Foreground}"
+                            Margin="5 2 2 2"
+    
+                            Text="{Binding Description,
+                                   Mode=OneWay,
+                                   RelativeSource={RelativeSource AncestorType={x:Type controls:CollapsibleListViewItem}}}"
+                            TextTrimming="CharacterEllipsis"
+                            Visibility="Visible"/>
+                        
+                        <!-- Actions -->
+                        <StackPanel
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            
+                            Background="{TemplateBinding Background}"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Margin="5 0 5 0">
+                        </StackPanel>
+
+                        <!-- Selected icon -->
+                        <Border
+                            x:Name="selectedIcon"
+                            Grid.Column="3"
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            Margin="2 2 2 5"
+                            
+                            Height="8"
+                            Width="8"
+                            VerticalAlignment="Center"
+                            Visibility="Visible">
+                            <Path
+                                Data="M23.705 20.087 14.212 1.366C13.785.523 12.938 0 12 0s-1.786.523-2.212 1.365L.295 20.087a2.69 2.69 0 0 0 .107 2.642A2.64 2.64 0 0 0 2.666 24h18.667c.929 0 1.775-.476 2.264-1.271a2.69 2.69 0 0 0 .107-2.642Zm-.959 2.118a1.65 1.65 0 0 1-1.412.795H2.667a1.65 1.65 0 0 1-1.412-.795 1.7 1.7 0 0 1-.068-1.665l9.492-18.723C10.939 1.305 11.432 1 12 1s1.061.306 1.321.818l9.492 18.722a1.69 1.69 0 0 1-.068 1.665Z"
+                                Fill="{TemplateBinding Foreground}"
+                                Stretch="Uniform"/>
+                        </Border>
+                    </Grid>
+
+                    <!--<ControlTemplate.Triggers>
+                        <Trigger Property="Icon"
+                                 Value="{x:Null}">
+                            <Setter TargetName="icon"
+                                    Property="Visibility"
+                                    Value="Collapsed"/>
+                        </Trigger>
+
+                        <Trigger Property="IsSelected"
+                                 Value="True">
+                            <Setter TargetName="selectedIcon"
+                                    Property="Visibility"
+                                    Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected"
+                                 Value="False">
+                            <Setter TargetName="selectedIcon"
+                                    Property="Visibility"
+                                    Value="Hidden"/>
+                        </Trigger>
+
+                        <Trigger Property="IsCollapsed"
+                                 Value="True">
+                            <Setter TargetName="title"
+                                    Property="Visibility"
+                                    Value="Collapsed"/>
+                            <Setter TargetName="description"
+                                    Property="Visibility"
+                                    Value="Collapsed"/>
+                        </Trigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCollapsed" Value="False"/>
+                                <Condition Property="Description" Value="{x:Null}"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="title"
+                                    Property="Visibility"
+                                    Value="Visible"/>
+                            <Setter TargetName="title"
+                                    Property="Grid.RowSpan"
+                                    Value="2"/>
+                            <Setter TargetName="description"
+                                    Property="Visibility"
+                                    Value="Collapsed"/>
+                        </MultiTrigger>
+
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsCollapsed" Value="False"/>
+                                <Condition Property="Description" Value=""/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="title"
+                                    Property="Visibility"
+                                    Value="Visible"/>
+                            <Setter TargetName="title"
+                                    Property="Grid.RowSpan"
+                                    Value="2"/>
+                            <Setter TargetName="description"
+                                    Property="Visibility"
+                                    Value="Collapsed"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:CollapsibleListView}">
+        <Setter Property="BorderThickness" Value="{DynamicResource BorderThickness_No}"/>
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:CollapsibleListView}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <!-- Logo -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Title -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- Content -->
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <!-- Logo -->
+                            <Border
+                                x:Name="logo"
+                                Grid.Row="0"
+                                
+                                Focusable="False"
+                                Height="100"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Width="200">
+                                <ContentPresenter
+                                    Content="{Binding Logo,
+                                              Mode=OneWay,
+                                              RelativeSource={RelativeSource AncestorType={x:Type controls:CollapsibleListView}}}"/>
+                            </Border>
+                            <TextBlock Grid.Row="1" Text="PEWPEW"/>
+                            <ScrollViewer
+                                Grid.Row="2"
+                                Focusable="False">
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Grid>
+                        
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:CollapsiblePanel}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:CollapsiblePanel}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <ContentPresenter
+                            x:Name="content"
+                            
+                            Grid.Row="0"
+                            
+                            Content="{TemplateBinding Content}"
+                            Focusable="False"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Visibility="Visible"/>
+
+                        <ToggleButton 
+                            Grid.Row="1"
+                            
+                            Background="{TemplateBinding Background}"
+                            Foreground="{TemplateBinding Foreground}"
+                            IsChecked="{Binding IsCollapsed,
+                                                Converter={StaticResource InverseBooleanConverter},
+                                                Mode=OneWay,
+                                                RelativeSource={RelativeSource AncestorType={x:Type controls:CollapsiblePanel}}}"
+                            Style="{StaticResource ToggleButton_SidePanel_Style}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

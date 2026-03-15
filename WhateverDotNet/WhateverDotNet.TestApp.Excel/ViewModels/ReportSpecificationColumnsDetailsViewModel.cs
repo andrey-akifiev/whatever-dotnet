@@ -18,12 +18,12 @@ public class ReportSpecificationColumnsDetailsViewModel
     {
         new TableColumn
         {
-            Name = "Name",
+            Name = "Title",
         },
         new TableColumn
         {
             Name = "DisplayName",
-            DisplayName = "Display Name",
+            DisplayName = "Display Title",
         },
         new TableColumn
         {
