@@ -4,13 +4,32 @@ using WhateverDotNet.API.Abstractions.Extensions;
 
 namespace WhateverDotNet.API.Abstractions.Logging;
 
+/// <summary>
+/// Default formatter used to create a readable API-call log message for test output.
+/// </summary>
 public class ApiLogMessageFormatter : ILogMessageFormatter
 {
+    /// <summary>
+    /// Index of the caller client method name entry.
+    /// </summary>
     public const int CallerClientMethodNameEntryIdx = 0;
+
+    /// <summary>
+    /// Index of the HTTP method name entry.
+    /// </summary>
     public const int HttpMethodNameEntryIdx = 1;
+
+    /// <summary>
+    /// Index of the HTTP endpoint path entry.
+    /// </summary>
     public const int HttpEndpointPathEntryIdx = 2;
+
+    /// <summary>
+    /// Index of the serialized request payload entry.
+    /// </summary>
     public const int SerializedPayloadEntryIdx = 3;
 
+    /// <inheritdoc />
     public string FormatLogMessage(params string?[] entries)
     {
         if (entries is null || entries.Length == 0)

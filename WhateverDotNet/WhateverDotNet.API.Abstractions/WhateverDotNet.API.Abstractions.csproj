@@ -1,9 +1,25 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <Authors>Andrey Akifiev</Authors>
+        <Company>Ujna Palmira EOOD</Company>
+        <Description>Abstractions and helpers for building JSON-based REST API clients, including a reusable BaseJsonRestClient, request/response JSON handling, DI registration extensions, and test-execution logging utilities.</Description>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IncludeSymbols>true</IncludeSymbols>
+        <PackageId>WhateverDotNet.API.Abstractions</PackageId>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <RepositoryUrl>https://github.com/andrey-akifiev/whatever-dotnet</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <Version>0.1.0-preview.1</Version>
     </PropertyGroup>
 
     <ItemGroup>
