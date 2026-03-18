@@ -2,12 +2,11 @@
 
 using Microsoft.Extensions.Logging;
 using WhateverDotNet.Cucumber.Contracts;
-using WhateverDotNet.Reports.Contracts;
+using WhateverDotNet.Reports.Abstractions;
 
 namespace WhateverDotNet.Reports.Parser.Cucumber;
 
 public class CucumberParser(CucumberParserOptions options, ILoggerFactory? loggerFactory = null)
-    : ITestResultsParser
 {
     private readonly ILogger<CucumberParser>? _logger = loggerFactory?.CreateLogger<CucumberParser>();
     private readonly CucumberParserOptions _options = options ?? throw new ArgumentNullException(nameof(options));

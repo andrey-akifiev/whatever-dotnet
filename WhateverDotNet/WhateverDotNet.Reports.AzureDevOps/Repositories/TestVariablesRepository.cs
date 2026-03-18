@@ -1,254 +1,138 @@
-using System.Collections.Concurrent;
-
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.Services.TestManagement.TestPlanning.WebApi;
 
 using WhateverDotNet.Reporting.AzureDevOps.AzureDevOpsClient;
-using WhateverDotNet.Reports.Contracts;
 
 namespace WhateverDotNet.Reporting.AzureDevOps.Repositories;
 
-public class TestVariablesRepository(AzureDevOpsService azureDevOpsService, ILoggerFactory? loggerFactory = null)
-    : IDisposable
+public class TestVariablesRepository(
+    AzureTestPlansGateway azureTestPlansGateway,
+    AzureDevOpsOptions azureDevOpsOptions,
+    IMemoryCache cache,
+    ILoggerFactory? loggerFactory = null)
+    : BaseAzureDevOpsRepository<TestVariable>(cache, loggerFactory)
 {
     private const string CacheKeyPrefix = "TestVariable_";
     
-    private readonly AzureDevOpsService _azureDevOpsService = azureDevOpsService 
-                                                    ?? throw new ArgumentNullException(nameof(azureDevOpsService));
-    private readonly ConcurrentDictionary<string, AgnosticTestRunVariable> _cache = new();
-    private readonly SemaphoreSlim _lockObject = new(1, 1);
-    private readonly ILogger<TestVariablesRepository>? _logger = loggerFactory?.CreateLogger<TestVariablesRepository>();
-
-    private bool _isLoaded = false;
+    private readonly AzureDevOpsOptions _azureDevOpsOptions = azureDevOpsOptions
+        ?? throw new ArgumentNullException(nameof(azureDevOpsOptions));
+    private readonly AzureTestPlansGateway _azureTestPlansGateway = azureTestPlansGateway
+        ?? throw new ArgumentNullException(nameof(azureTestPlansGateway));
     
-    public void Dispose()
-    {
-        _lockObject.Dispose();
-    }
-
-    public async Task<AgnosticTestRunVariable> CreateTestVariableAsync(
+    public async Task<TestVariable> CreateTestVariableAsync(
         string variableName,
         IEnumerable<string>? values = null,
         CancellationToken cancellationToken = default)
     {
-        await _lockObject
+        await LockObject
             .WaitAsync(cancellationToken)
             .ConfigureAwait(false);
-        _isLoaded = false;
         
         try
         {
-            TestVariable response = await _azureDevOpsService
+            TestVariable response = await _azureTestPlansGateway
                 .CreateTestVariableAsync(
+                    _azureDevOpsOptions.ProjectName!,
                     variableName,
                     null,
                     values,
                     cancellationToken)
                 .ConfigureAwait(false);
-
-            var result = new AgnosticTestRunVariable
-            {
-                Id = response.Id.ToString(),
-                Name = response.Name,
-                Values = response.Values,
-            };
             
-            _cache.TryAdd($"{CacheKeyPrefix}{response.Name}", result);
+            Cache.Set(GetCacheKey(response), response);
             
-            _isLoaded = true;
-            
-            return result; 
+            return response; 
         }
         finally
         {
-            _lockObject.Release();
+            LockObject.Release();
         }
     }
     
-    public async Task<AgnosticTestRunVariable?> GetTestVariableAsync(
-        string cacheKey,
-        CancellationToken cancellationToken = default)
-    {
-        if (_cache.TryGetValue(cacheKey, out AgnosticTestRunVariable? cachedTestVariable))
-        {
-            return cachedTestVariable!;
-        }
-
-        await _lockObject
-            .WaitAsync(cancellationToken)
-            .ConfigureAwait(false);
-        _isLoaded = false;
-
-        try
-        {
-            await LoadTestVariablesAsync(cancellationToken).ConfigureAwait(false);
-            return _cache.GetValueOrDefault(cacheKey);
-        }
-        finally
-        {
-            _lockObject.Release();
-        }
-    }
-    
-    public async Task<AgnosticTestRunVariable?> GetTestVariableByNameAsync(
+    public async Task<TestVariable?> GetTestVariableByNameAsync(
         string variableName,
         CancellationToken cancellationToken = default)
     {
-        string cacheKey = $"{CacheKeyPrefix}{variableName}";
-        return await GetTestVariableAsync(cacheKey, cancellationToken).ConfigureAwait(false);
-    }
-
-    public async Task<IEnumerable<AgnosticTestRunVariable>> GetTestVariablesAsync(
-        CancellationToken cancellationToken = default)
-    {
-        IEnumerable<AgnosticTestRunVariable> GetTestVariables()
+        if (string.IsNullOrWhiteSpace(variableName))
         {
-            return _cache
-                .Keys
-                .Select(k => _cache.GetValueOrDefault(k))
-                .Where(v => v != null)
-                .ToArray()!;
-        }
-
-        if (_isLoaded)
-        {
-            return GetTestVariables();
+            throw new ArgumentException(
+                "Test variable name cannot be null or whitespace.",
+                nameof(variableName));
         }
         
-        await _lockObject
-            .WaitAsync(cancellationToken)
-            .ConfigureAwait(false);
-
-        try
-        {
-            if (_isLoaded)
-            {
-                return GetTestVariables();
-            }
-
-            _isLoaded = false;
-            
-            await LoadTestVariablesAsync(cancellationToken).ConfigureAwait(false);
-            
-            return GetTestVariables();
-        }
-        finally
-        {
-            _lockObject.Release();
-        }
+        string cacheKey = GetCacheKey(variableName);
+        return await GetItemAsync(cacheKey, cancellationToken).ConfigureAwait(false);
     }
-    
-    public async Task<AgnosticTestRunVariable?> UpdateTestVariableAsync(
+
+    public async Task<TestVariable?> UpdateTestVariableAsync(
         string oldName,
         string newName,
         IEnumerable<string>? values = null,
         CancellationToken cancellationToken = default)
     {
-        string oldKey = $"{CacheKeyPrefix}{oldName}";
-        string newKey = $"{CacheKeyPrefix}{newName}";
+        string oldKey = GetCacheKey(oldName);
+        string newKey = GetCacheKey(newName);
         
-        await _lockObject
+        await LockObject
             .WaitAsync(cancellationToken)
             .ConfigureAwait(false);
-        _isLoaded = false;
         
         try
         {
-            if (_cache.IsEmpty)
+            // Old value is not found, so we create a new variable with the new name and values
+            if (!Cache.TryGetValue(oldName, out TestVariable? oldTestVariable)
+                || oldTestVariable == null)
             {
-                _isLoaded = false;
-                await LoadTestVariablesAsync(cancellationToken).ConfigureAwait(false);
-            }
-
-            if (!_cache.TryGetValue(oldName, out AgnosticTestRunVariable? oldTestVariable))
-            {
-                TestVariable response = await _azureDevOpsService
-                    .CreateTestVariableAsync(
-                        newName,
-                        values: values,
-                        cancellationToken: cancellationToken)
-                    .ConfigureAwait(false);
-
-                oldTestVariable = _cache.GetOrAdd(
-                    oldKey,
-                    new AgnosticTestRunVariable
-                    {
-                        Id = response.Id.ToString(),
-                        Name = response.Name,
-                        Values = response.Values,
-                    });
+                return await CreateTestVariableAsync(
+                    newName,
+                    values,
+                    cancellationToken).ConfigureAwait(false);
             }
             
+            // If the old variable has the same name and values as the new variable
+            // we can return the old variable without making an API call
             if (oldTestVariable.Name == newName
                 && (oldTestVariable.Values == null && values == null
                 || values != null
                 && !(oldTestVariable.Values?.Except(values)).Any()))
             {
-                _isLoaded = true;
                 return oldTestVariable;
             }
             
-            TestVariable updateResponse = await _azureDevOpsService
+            // Update the variable with the new name and values
+            TestVariable updateResponse = await _azureTestPlansGateway
                 .UpdateTestVariableAsync(
-                    int.Parse(oldTestVariable.Id!),
+                    _azureDevOpsOptions.ProjectName!,
+                    oldTestVariable.Id,
                     newName,
                     null,
                     values,
                     cancellationToken)
                 .ConfigureAwait(false);
-            
-            AgnosticTestRunVariable updatedTestVariable = new()
-            {
-                Id = updateResponse.Id.ToString(),
-                Name = updateResponse.Name,
-                Values = updateResponse.Values,
-            };
 
-            if (oldName == newName)
+            // Update the cache with the new variable
+            if (oldName != newName)
             {
-                return _cache.TryUpdate(oldKey, updatedTestVariable, oldTestVariable)
-                    ? updatedTestVariable
-                    : oldTestVariable;
+                Cache.Remove(GetCacheKey(oldName));
             }
             
-            _cache.TryRemove(oldKey, out _);
+            Cache.Set(GetCacheKey(newName), updateResponse);
             
-            if (!_cache.TryAdd(newKey, updatedTestVariable))
-            {
-                // TODO: Handle this scenario better
-                _logger?.LogWarning(
-                    "Failed to add updated test variable '{TestVariableName}' to cache.",
-                    newName);
-            }
-
-            return updatedTestVariable;
+            return updateResponse;
         }
         finally
         {
-            _lockObject.Release();
+            LockObject.Release();
         }
     }
     
-    private async Task LoadTestVariablesAsync(CancellationToken cancellationToken = default)
-    {
-        _cache.Clear();
-        
-        IEnumerable<TestVariable> testVariables = await _azureDevOpsService
-            .GetTestVariablesAsync(cancellationToken)
-            .ConfigureAwait(false);
+    protected override string GetCacheKey(string itemName)
+        => $"{CacheKeyPrefix}{itemName}";
 
-        foreach (TestVariable testVariable in testVariables)
-        {
-            string cacheKey = $"{CacheKeyPrefix}{testVariable.Name}";
-            var agnosticVariable = new AgnosticTestRunVariable
-            {
-                Id = testVariable.Id.ToString(),
-                Name = testVariable.Name,
-                Values = testVariable.Values,
-            };
-            _cache.TryAdd(cacheKey, agnosticVariable);
-        }
+    protected override string GetCacheKey(TestVariable item)
+        => GetCacheKey(item.Name);
 
-        _isLoaded = true;
-    }
+    protected override Task<IEnumerable<TestVariable>> LoadItemsAsync(CancellationToken cancellationToken = default)
+        => _azureTestPlansGateway.GetTestVariablesAsync(_azureDevOpsOptions.ProjectName!, cancellationToken);
 }

@@ -10,11 +10,15 @@
 
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.9.1" />
-      <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.2" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.3" />
+      <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.3" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WhateverDotNet.Reports.Contracts\WhateverDotNet.Reports.Contracts.csproj" />
+      <ProjectReference Include="..\WhateverDotNet.Reports.AzureDevOps\WhateverDotNet.Reports.AzureDevOps.csproj" />
+      <ProjectReference Include="..\WhateverDotNet.Reports.Abstractions\WhateverDotNet.Reports.Abstractions.csproj" />
+      <ProjectReference Include="..\WhateverDotNet.Reports.Parser.CSharp\WhateverDotNet.Reports.Parser.CSharp.csproj" />
     </ItemGroup>
 
 </Project>
