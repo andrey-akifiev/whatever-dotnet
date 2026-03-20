@@ -60,8 +60,6 @@ public class ApiLogMessageFormatter : ILogMessageFormatter
             sb.AppendLine(serializedPayload);
         }
         
-        sb.AppendLine();
-        
         return sb.ToString();
     }
 }

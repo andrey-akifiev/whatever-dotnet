@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
@@ -9,25 +9,21 @@
     <PropertyGroup>
         <Authors>Andrey Akifiev</Authors>
         <Company>Ujna Palmira EOOD</Company>
-        <Description>Abstractions and helpers for building JSON-based REST API clients, including a reusable BaseJsonRestClient, request/response JSON handling, DI registration extensions, and test-execution logging utilities.</Description>
+        <Description>Small set of configuration abstractions shared across the WhateverDotNet ecosystem.</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <IncludeSymbols>true</IncludeSymbols>
-        <PackageId>WhateverDotNet.API.Abstractions</PackageId>
+        <PackageId>WhateverDotNet.Configuration.Abstractions</PackageId>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <RepositoryUrl>https://github.com/andrey-akifiev/whatever-dotnet</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <Version>0.1.0-preview.3</Version>
+        <Version>0.1.0-preview.2</Version>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.5" />
-      <PackageReference Include="Microsoft.Net.Http.Headers" Version="10.0.5" />
+        <None Include="README.md" Pack="true" PackagePath=""/>
     </ItemGroup>
 
-    <ItemGroup>
-      <None Include="README.md" Pack="true" PackagePath="" />
-    </ItemGroup>
 </Project>

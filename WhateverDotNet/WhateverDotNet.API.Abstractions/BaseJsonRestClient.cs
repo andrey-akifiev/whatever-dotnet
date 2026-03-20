@@ -18,12 +18,12 @@ namespace WhateverDotNet.API.Abstractions;
 /// </summary>
 /// <param name="options">Client configuration options (base URL, timeout).</param>
 /// <param name="logFormatter">Formatter used to produce readable API call messages.</param>
-/// <param name="apiLogger">Optional test-execution logger for recording steps.</param>
+/// <param name="testExecutionLogger">Optional test-execution logger for recording steps.</param>
 /// <param name="loggerFactory">Optional logger factory for structured tracing.</param>
-public abstract class BaseJsonRestClient(
+public class BaseJsonRestClient(
     BaseJsonRestClientOptions options,
     ILogMessageFormatter logFormatter,
-    ITestExecutionLogger? apiLogger,
+    ITestExecutionLogger? testExecutionLogger,
     ILoggerFactory? loggerFactory = null)
     : IDisposable
 {
@@ -39,11 +39,12 @@ public abstract class BaseJsonRestClient(
     
     /// <summary>
     /// Optional logger for recording API call steps in test execution logs.
-    /// If not provided, API calls will not be logged in test reports, but structured logging via <see cref="_logger"/> may still occur if a logger factory is given.
+    /// If not provided, API calls will not be logged in test reports,
+    /// but structured logging via <see cref="_logger"/> may still occur if a logger factory is given.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    protected readonly ITestExecutionLogger? _apiLogger = apiLogger 
-        ?? throw new ArgumentNullException(nameof(apiLogger));
+    protected readonly ITestExecutionLogger? _apiLogger = testExecutionLogger 
+        ?? throw new ArgumentNullException(nameof(testExecutionLogger));
     
     /// <summary>
     /// Optional logger for recording API call details in structured logs (e.g. for debugging or telemetry).
@@ -123,7 +124,7 @@ public abstract class BaseJsonRestClient(
     /// <exception cref="ArgumentNullException">
     /// Thrown when <paramref name="authorizationToken"/> is blank, or when <see cref="BaseJsonRestClientOptions.BaseUrl"/> is not set.
     /// </exception>
-    protected virtual HttpClient CreateClient(
+    public virtual HttpClient CreateClient(
         string authorizationToken,
         IReadOnlyDictionary<string, string>? additionalHeaders = null)
     {
@@ -136,6 +137,8 @@ public abstract class BaseJsonRestClient(
         {
             throw new ArgumentNullException(nameof(_options.BaseUrl));
         }
+        
+        _httpClient?.Dispose();
 
         HttpClient httpClient = new ()
         {
@@ -160,7 +163,7 @@ public abstract class BaseJsonRestClient(
             .DefaultRequestHeaders
             .Add(HeaderNames.Authorization, authorizationToken);
         
-        return httpClient;
+        return _httpClient = httpClient;
     }
 
     /// <summary>
@@ -174,13 +177,19 @@ public abstract class BaseJsonRestClient(
     /// <summary>
     /// Executes an API call and asserts that its result matches the expected HTTP status code.
     /// </summary>
-    /// <param name="function">Function performing the API call and returning deserialized response and raw message.</param>
-    /// <param name="expectedStatusCode">Expected HTTP status code.</param>
+    /// <param name="invocationFunction">Function performing the API call and returning deserialized response and raw message.</param>
+    /// <param name="assertionFunction">Function validating th response returned by the API call.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <typeparam name="TResponse">Response DTO type.</typeparam>
     /// <returns>The deserialized response.</returns>
-    protected abstract Task<TResponse> ExecuteAndAssertAsync<TResponse>(
-        Func<Task<(TResponse? Response, HttpResponseMessage Message)>> function,
-        HttpStatusCode expectedStatusCode);
+    public virtual async Task<TResponse> InvokeAndAssertAsync<TResponse>(
+        Func<CancellationToken, Task<(TResponse? Response, HttpResponseMessage Message)>> invocationFunction,
+        Func<(TResponse? Response, HttpResponseMessage Message), HttpStatusCode, TResponse> assertionFunction,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await invocationFunction(cancellationToken).ConfigureAwait(false);
+        return assertionFunction(result, HttpStatusCode.OK);
+    }
 
     /// <summary>
     /// Sends an HTTP DELETE request and attempts to deserialize the response as JSON.
@@ -192,7 +201,7 @@ public abstract class BaseJsonRestClient(
     /// <param name="callerClientMethodName">Caller method name used for logging.</param>
     /// <typeparam name="TResponse">Response DTO type.</typeparam>
     /// <returns>A tuple with the deserialized response (if any) and the raw HTTP message.</returns>
-    protected virtual async Task<(TResponse? Response, HttpResponseMessage Message)> TryDeleteAsJsonAsync<TResponse>(
+    public virtual async Task<(TResponse? Response, HttpResponseMessage Message)> TryDeleteAsJsonAsync<TResponse>(
         string endpointPath,
         object? requestBody = null,
         IReadOnlyDictionary<string, string>? additionalHeaders = null,
@@ -223,7 +232,7 @@ public abstract class BaseJsonRestClient(
     /// <param name="callerClientMethodName">Caller method name used for logging.</param>
     /// <typeparam name="TResponse">Response DTO type.</typeparam>
     /// <returns>A tuple with the deserialized response (if any) and the raw HTTP message.</returns>
-    protected virtual async Task<(TResponse? Response, HttpResponseMessage Message)> TryGetAsJsonAsync<TResponse>(
+    public virtual async Task<(TResponse? Response, HttpResponseMessage Message)> TryGetAsJsonAsync<TResponse>(
         string endpointPath,
         IReadOnlyDictionary<string, string>? additionalHeaders = null,
         CancellationToken cancellationToken = default,
@@ -254,7 +263,7 @@ public abstract class BaseJsonRestClient(
     /// <param name="callerClientMethodName">Caller method name used for logging.</param>
     /// <typeparam name="TResponse">Response DTO type.</typeparam>
     /// <returns>A tuple with the deserialized response (if any) and the raw HTTP message.</returns>
-    protected virtual async Task<(TResponse? Response, HttpResponseMessage Message)> TryPostAsJsonAsync<TResponse>(
+    public virtual async Task<(TResponse? Response, HttpResponseMessage Message)> TryPostAsJsonAsync<TResponse>(
         string endpointPath,
         object? requestBody,
         IReadOnlyDictionary<string, string>? additionalHeaders = null,
@@ -286,7 +295,7 @@ public abstract class BaseJsonRestClient(
     /// <param name="callerClientMethodName">Caller method name used for logging.</param>
     /// <typeparam name="TResponse">Response DTO type.</typeparam>
     /// <returns>A tuple with the deserialized response (if any) and the raw HTTP message.</returns>
-    protected virtual async Task<(TResponse? Response, HttpResponseMessage Message)> TryPutAsJsonAsync<TResponse>(
+    public virtual async Task<(TResponse? Response, HttpResponseMessage Message)> TryPutAsJsonAsync<TResponse>(
         string endpointPath,
         object? requestBody,
         IReadOnlyDictionary<string, string>? additionalHeaders = null,
@@ -334,7 +343,7 @@ public abstract class BaseJsonRestClient(
             throw new HttpClientNotInitializedException();
         }
         
-        using var request = new HttpRequestMessage(method, endpointPath);
+        HttpRequestMessage request = new (method, endpointPath);
 
         if (additionalHeaders is not null && additionalHeaders.Count > 0)
         {

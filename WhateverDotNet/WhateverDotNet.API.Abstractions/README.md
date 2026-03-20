@@ -33,49 +33,72 @@ Create your API client by inheriting from `BaseJsonRestClient` and implementing 
 
 ```csharp
 using System.Net;
+
+using FluentAssertions;
+
 using Microsoft.Extensions.Logging;
+
 using WhateverDotNet.API.Abstractions;
 using WhateverDotNet.API.Abstractions.Logging;
 
-public sealed class MyApiClient : BaseJsonRestClient
+public sealed class MyApiClient : IDisposable
 {
+    private BaseJsonRestClient _client;
+
     public MyApiClient(
         BaseJsonRestClientOptions options,
         ILogMessageFormatter formatter,
         ITestExecutionLogger? apiLogger,
         ILoggerFactory? loggerFactory = null)
-        : base(options, formatter, apiLogger, loggerFactory)
     {
+        _client = new BaseJsonRestClient(options, logFormatter, testExecutionLogger, loggerFactory);
     }
 
     public void ConnectAs(string bearerToken)
     {
         // The base class throws if BaseUrl/token are missing.
-        _httpClient = CreateClient($"Bearer {bearerToken}");
+        CreateClient($"Bearer {bearerToken}");
     }
 
-    public Task<MyDto> GetSomethingAsync(CancellationToken ct = default)
-        => ExecuteAndAssertAsync(
-            () => TryGetAsJsonAsync<MyDto>("/v1/something", cancellationToken: ct),
-            HttpStatusCode.OK);
-
-    protected override async Task<TResponse> ExecuteAndAssertAsync<TResponse>(
-        Func<Task<(TResponse? Response, HttpResponseMessage Message)>> function,
-        HttpStatusCode expectedStatusCode)
+    public void Dispose()
     {
-        var (response, message) = await function().ConfigureAwait(false);
+        _client?.Dispose();
+    }
 
-        if (message.StatusCode != expectedStatusCode)
-        {
-            var body = message.Content is null
-                ? null
-                : await message.Content.ReadAsStringAsync().ConfigureAwait(false);
+    public Task<MyDto> GetSomethingAsync(CancellationToken cancellationToken = default)
+        => InvokeAndAssertAsync(
+              (cancellationToken) => TryGetSomethingAsync(cancellationToken),
+              HttpStatusCode.OK,
+              cancellationToken);
 
-            throw new InvalidOperationException(
-                $"Expected {(int)expectedStatusCode} but got {(int)message.StatusCode}. Body: {body}");
-        }
+    public async Task<(MyDto Response, HttpResponseMessage Message)> TryGetSomethingAsync(
+        CancellationToken cancellationToken = default)
+            => TryGetAsJsonAsync<MyDto>("/v1/something", cancellationToken: cancellationToken);
+    
+    protected Task<TResponse> InvokeAndAssertAsync<TResponse>(
+        Func<CancellationToken, Task<(TResponse? Response, HttpResponseMessage Message)>> invocationFunction,
+        HttpStatusCode expectedStatusCode,
+        CancellationToken cancellationToken = default)
+        where TResponse : BaseResponse
+            => _client.InvokeAndAssertAsync(
+                    invocationFunction,
+                    (invocationResult, _) => AssertResponse(invocationResult, expectedStatusCode),
+                    cancellationToken);
 
-        return response!;
+    private TResponse AssertResponse<TResponse>(
+        (TResponse? Response, HttpResponseMessage Message) result,
+        HttpStatusCode expectedStatusCode)
+            where TResponse : BaseResponse
+    {
+        result.Message.StatusCode.Should().Be(expectedStatusCode);
+
+        result.Response.Should().NotBeNull();
+        result.Response.Errors.Should().BeNull();
+        result.Response.ErrorMessages.Should().BeNull();
+        result.Response.IsSuccess.Should().BeTrue();
+        result.Response.Status.Should().Be((int)expectedStatusCode);
+
+        return result.Response;
     }
 }
 

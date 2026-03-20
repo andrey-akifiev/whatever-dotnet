@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Cucumber.Jso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Cucumber.Json.Contracts", "WhateverDotNet.Cucumber.Json.Contracts\WhateverDotNet.Cucumber.Json.Contracts.csproj", "{227CAFA5-7D52-4DC4-858F-28ADF8F6EE02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Configuration", "WhateverDotNet.Configuration\WhateverDotNet.Configuration.csproj", "{A8153BBD-C90B-4274-9AD8-3567D963C2FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Configuration.EnvironmentVariables", "WhateverDotNet.Configuration.EnvironmentVariables\WhateverDotNet.Configuration.EnvironmentVariables.csproj", "{A8153BBD-C90B-4274-9AD8-3567D963C2FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Cucumber.Json.Serialization", "WhateverDotNet.Cucumber.Json.Serialization\WhateverDotNet.Cucumber.Json.Serialization.csproj", "{66CE7014-1B2D-4483-B4C7-077CF18F0FDD}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Reports.Parser.CSharp", "WhateverDotNet.Reports.Parser.CSharp\WhateverDotNet.Reports.Parser.CSharp.csproj", "{4F820028-B99A-46AE-A9D6-8C9D48C8317E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.API.Abstractions", "WhateverDotNet.API.Abstractions\WhateverDotNet.API.Abstractions.csproj", "{D11A7001-799A-4ECF-8968-85652A83F2BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhateverDotNet.Configuration.Abstractions", "WhateverDotNet.Configuration.Abstractions\WhateverDotNet.Configuration.Abstractions.csproj", "{081B22EB-EA41-4C66-AF21-C7092DDD28EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,10 @@ Global
 		{D11A7001-799A-4ECF-8968-85652A83F2BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D11A7001-799A-4ECF-8968-85652A83F2BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D11A7001-799A-4ECF-8968-85652A83F2BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{081B22EB-EA41-4C66-AF21-C7092DDD28EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{081B22EB-EA41-4C66-AF21-C7092DDD28EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{081B22EB-EA41-4C66-AF21-C7092DDD28EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{081B22EB-EA41-4C66-AF21-C7092DDD28EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

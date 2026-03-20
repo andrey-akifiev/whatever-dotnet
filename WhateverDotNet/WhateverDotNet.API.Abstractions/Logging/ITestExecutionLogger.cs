@@ -6,11 +6,32 @@ namespace WhateverDotNet.API.Abstractions.Logging;
 public interface ITestExecutionLogger
 {
     /// <summary>
+    /// Adds a common precondition message that will be included in the test output.
+    /// Used for test framework what does not support test execution logs shared between tests, such as NUnit.
+    /// </summary>
+    /// <param name="message">Message describing the common precondition.</param>
+    public void AddCommonPrecondition(string message);
+    
+    /// <summary>
+    /// Adds a common step message that will be included in the test output.
+    /// Used for test framework what does not support test execution logs shared between tests, such as NUnit.
+    /// </summary>
+    /// <param name="message">Message describing the common step.</param>
+    public void AddCommonStep(string message);
+    
+    /// <summary>
     /// Logs the actual result observed during the test.
     /// </summary>
     /// <param name="message">Message describing the actual result.</param>
     public void LogActualResult(string message);
 
+    /// <summary>
+    /// Logs common preconditions/steps that were previously added via
+    /// <see cref="AddCommonPrecondition"/> and <see cref="AddCommonStep"/>.
+    /// Used for test framework what does not support test execution logs shared between tests, such as NUnit.
+    /// </summary>
+    public void LogCommonSteps();
+    
     /// <summary>
     /// Logs the expected result for the current verification.
     /// </summary>
