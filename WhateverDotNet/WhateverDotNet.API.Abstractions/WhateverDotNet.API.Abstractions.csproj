@@ -27,4 +27,7 @@
       <PackageReference Include="Microsoft.Net.Http.Headers" Version="10.0.5" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="README.md" Pack="true" PackagePath="" />
+    </ItemGroup>
 </Project>
