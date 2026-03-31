@@ -20,7 +20,7 @@ public static class ServiceCollectionExtensions
         TestExecutionLoggerOptions options)
     {
         services.AddSingleton(options);
-        services.AddTransient<ITestExecutionLogger, NUnitTestExecutionLogger>();
+        services.AddScoped<ITestExecutionLogger, NUnitTestExecutionLogger>();
         
         return services;
     }
